@@ -1,4 +1,4 @@
-# Evidence-Bound Runtime instructions
+# Entailgate instructions
 
 This repository is the generic verification kernel. Domain behavior belongs in adapters or policy files.
 

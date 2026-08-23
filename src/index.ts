@@ -16,4 +16,4 @@ export * from "./reuse-policy.js";
 // review-checklist artifacts are an internal alpha contract with no published
 // JSON schema and no spec section, so exporting them here would make them a
 // public schema that AGENTS.md requires to be versioned in lockstep. The
-// workflow is reached through the `ebr dogfood` CLI commands.
+// workflow is reached through the `entailgate dogfood` CLI commands.

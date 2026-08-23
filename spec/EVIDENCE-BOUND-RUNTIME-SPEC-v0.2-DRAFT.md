@@ -1,4 +1,4 @@
-# Evidence-Bound Runtime Specification v0.2 — Draft
+# Entailgate Evidence-Bound Runtime Specification v0.2 — Draft
 
 Status: experimental; not the current legal filing gate
 Date: 2026-08-22

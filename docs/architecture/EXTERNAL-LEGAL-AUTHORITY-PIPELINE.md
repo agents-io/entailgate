@@ -74,7 +74,7 @@ authority after a harmless prose edit.
 Select only external legal candidates from a draft:
 
 ```text
-ebr legal scope --draft /absolute/path/to/draft.md
+entailgate legal scope --draft /absolute/path/to/draft.md
 ```
 
 The output omits prose-only candidates and every candidate's original text. It reports
@@ -85,7 +85,7 @@ remains `false`.
 Cache one downloaded external authority and create its immutable lock:
 
 ```text
-ebr legal cache-source \
+entailgate legal cache-source \
   --source /absolute/path/to/2024-bcsc-994.pdf \
   --cache-dir /absolute/path/to/private-authority-cache \
   --canonical-id BCSC-2024-994 \

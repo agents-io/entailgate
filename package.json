@@ -1,10 +1,11 @@
 {
-  "name": "@mcpware/evidence-bound-runtime",
+  "name": "@agents-io/entailgate",
   "version": "0.1.1",
   "private": true,
-  "description": "Deterministic evidence-bound verification kernel for AI text and actions",
+  "description": "Fail-closed evidence gate for AI claims and actions",
   "type": "module",
   "bin": {
+    "entailgate": "./dist/src/cli.js",
     "ebr": "./dist/src/cli.js"
   },
   "files": [
