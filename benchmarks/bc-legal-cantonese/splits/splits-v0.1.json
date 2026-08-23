@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1.0",
+  "strategy": "frozen_group_manifest",
+  "seed": 20260822,
+  "group_key_fields": [
+    "authority_family",
+    "document_family"
+  ],
+  "group_key_format": "{authority_family}::{document_family}",
+  "leakage_rules": [
+    "No authority_family may occur in more than one split.",
+    "No document_family may occur in more than one split.",
+    "No authority/document group_id may occur in more than one split."
+  ],
+  "future_group_assignment": {
+    "algorithm": "Build connected components across authority_family and document_family. A component touching one frozen split inherits it. A component touching conflicting frozen splits is rejected for adjudication; it is never auto-assigned. Only a wholly new component uses sha256(seed + ':' + canonical_component_id), first 8 hex digits modulo 100.",
+    "thresholds": {
+      "train": "0-59",
+      "dev": "60-79",
+      "test": "80-99"
+    },
+    "freeze_after_assignment": true
+  },
+  "assignments": {
+    "SYNTHETIC-RD-PROCEDURE::filing-and-submissions-v1": "train",
+    "SYNTHETIC-RD-PROCEDURE::written-reasons-v1": "train",
+    "SYNTHETIC-WCA::act-consolidation-v1": "dev",
+    "SYNTHETIC-WCAT::decision-family-999-v1": "dev",
+    "SYNTHETIC-RSCM::mental-disorder-policy-current-v1": "test",
+    "SYNTHETIC-RSCM::mental-disorder-policy-expired-v0": "test"
+  }
+}

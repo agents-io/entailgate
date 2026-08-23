@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpware.dev/schemas/ebr/0.2.0/claim-reuse-authorization.schema.json",
+  "title": "ClaimReuseAuthorization",
+  "description": "The verifier-policy decision about whether each claim-scoped semantic attestation carried by one revision-plan trace may be reused for the current draft. It is a separate artifact from the revision-plan trace and from the v0.1 AuditTrace. Every decision is claim-scoped: this artifact never issues a whole-document PASS, never releases a document, and never asserts that a claim is true. A stored decision is not authoritative on its own; a reader MUST replay it against the revision-plan trace, which recomputes every hash and every decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "authorizationId",
+    "createdAt",
+    "engineVersion",
+    "extractorVersion",
+    "asOf",
+    "policyHash",
+    "policy",
+    "trace",
+    "documentRelease",
+    "decisions",
+    "reasons",
+    "evaluationHash"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.2.0" },
+    "kind": { "const": "claim-reuse-authorization" },
+    "authorizationId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Envelope metadata outside evaluationHash. Not authenticated provenance."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Envelope metadata outside evaluationHash. An edit to it is not detectable from this artifact alone, and it may not be relied on as evidence of when a decision was made."
+    },
+    "engineVersion": { "type": "string", "minLength": 1 },
+    "extractorVersion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The extractor version recorded in the revision-plan trace. A reuse authorization inherits that extractor's protected-fingerprint judgement and is only as strong as it."
+    },
+    "asOf": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The caller-supplied deterministic evaluation instant every freshness gate is measured against. It is bound by evaluationHash. It is deterministic input, not authenticated time."
+    },
+    "policyHash": {
+      "$ref": "#/$defs/sha256",
+      "description": "hashObject over the stored canonical policy. A reader MUST recompute it from the stored policy rather than trust it."
+    },
+    "policy": { "$ref": "#/$defs/policy" },
+    "trace": { "$ref": "#/$defs/traceBinding" },
+    "documentRelease": { "$ref": "#/$defs/documentRelease" },
+    "decisions": {
+      "type": "array",
+      "description": "One decision per mapped bound attestation, canonically sorted ascending and unique by boundAttestationHash. The runtime reader additionally rejects an unordered or duplicated array.",
+      "items": { "$ref": "#/$defs/decision" }
+    },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "evaluationHash": {
+      "$ref": "#/$defs/sha256",
+      "description": "hashObject over schemaVersion, kind, engineVersion, extractorVersion, asOf, policyHash, policy, trace, documentRelease, decisions, and reasons. authorizationId and createdAt are excluded so the same trace, policy, and asOf reproduce the same identity."
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "trustedChecker": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One allowlisted checker identity. Trust is the exact triple; a new version or a different kind is a different attestor.",
+      "required": ["checkerName", "checkerVersion", "checkerKind"],
+      "properties": {
+        "checkerName": { "type": "string", "minLength": 1 },
+        "checkerVersion": { "type": "string", "minLength": 1 },
+        "checkerKind": { "enum": ["human", "model", "hybrid"] }
+      }
+    },
+    "claimPin": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What one claim's attestation must carry, and what the caller declares about it. claimBindingHash, snapshotId, and evidenceHash are cryptographic gates: the attestation must carry exactly these values. A snapshot ID alone is not enough, because one snapshot serves many claims with different cited subsets. jurisdiction, domain, and sourceCurrencyConfirmedAsOf are caller declarations recorded and age-gated here; this runtime cannot read any of the three out of a SemanticAttestation and does not independently verify them. Exactly one pin per claimId is permitted.",
+      "required": [
+        "claimId",
+        "claimBindingHash",
+        "snapshotId",
+        "evidenceHash",
+        "jurisdiction",
+        "domain",
+        "sourceCurrencyConfirmedAsOf"
+      ],
+      "properties": {
+        "claimId": { "type": "string", "minLength": 1 },
+        "claimBindingHash": { "$ref": "#/$defs/sha256" },
+        "snapshotId": { "type": "string", "minLength": 1 },
+        "evidenceHash": { "$ref": "#/$defs/sha256" },
+        "jurisdiction": { "type": "string", "minLength": 1 },
+        "domain": { "type": "string", "minLength": 1 },
+        "sourceCurrencyConfirmedAsOf": { "type": "string", "format": "date-time" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The closed policy input, stored in canonical order: trustedCheckers sorted by name, version, and kind; claimPins sorted by claimId. The runtime reader additionally rejects a stored policy that is not in canonical order, that duplicates a checker triple or a claimId, or that gives one checker name and version two different kinds.",
+      "required": [
+        "policyId",
+        "domain",
+        "jurisdiction",
+        "minScore",
+        "maxAttestationAgeDays",
+        "maxSourceCurrencyAgeDays",
+        "trustedCheckers",
+        "claimPins"
+      ],
+      "properties": {
+        "policyId": { "type": "string", "minLength": 1 },
+        "domain": { "type": "string", "minLength": 1 },
+        "jurisdiction": { "type": "string", "minLength": 1 },
+        "minScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "The explicit score threshold an attestation must meet. There is no default."
+        },
+        "maxAttestationAgeDays": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The explicit maximum age of an attestation, measured from checkedAt to asOf. There is no clock-skew window: asOf is deterministic input, so an attestation dated after it is always refused."
+        },
+        "maxSourceCurrencyAgeDays": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The explicit maximum age of the caller's source-currency confirmation, measured to asOf."
+        },
+        "trustedCheckers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/trustedChecker" }
+        },
+        "claimPins": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/claimPin" }
+        }
+      }
+    },
+    "traceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The revision-plan trace this decision was evaluated against. A replay MUST be given that exact artifact; a trace whose artifactHash differs is refused rather than re-evaluated.",
+      "required": [
+        "artifactHash",
+        "previousSubjectSha256",
+        "currentSubjectSha256",
+        "priorAttestationsHash",
+        "mappingHash",
+        "mappingStatus"
+      ],
+      "properties": {
+        "artifactHash": { "$ref": "#/$defs/sha256" },
+        "previousSubjectSha256": { "$ref": "#/$defs/sha256" },
+        "currentSubjectSha256": { "$ref": "#/$defs/sha256" },
+        "priorAttestationsHash": { "$ref": "#/$defs/sha256" },
+        "mappingHash": { "$ref": "#/$defs/sha256" },
+        "mappingStatus": {
+          "enum": ["NOT_ATTEMPTED", "COMPLETE", "INCOMPLETE"],
+          "description": "COMPLETE is a precondition for any authorization, never a reason for one. Any other status refuses every decision in this artifact."
+        }
+      }
+    },
+    "documentRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The document-level condition that survives every claim-scoped decision. Automatic candidate extraction never asserts complete coverage, so this artifact has exactly one document status and can never release a document.",
+      "required": ["status", "coverageComplete", "reasons"],
+      "properties": {
+        "status": { "const": "DOCUMENT_REVIEW_REQUIRED" },
+        "coverageComplete": { "const": false },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One typed reason authorization was refused. Every blocker is fatal to REUSE_AUTHORIZED.",
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "enum": [
+            "MAPPING_STATUS_NOT_COMPLETE",
+            "MAPPING_NOT_IN_PLAN",
+            "MAPPING_AMBIGUOUS",
+            "PLAN_ITEM_UNAVAILABLE",
+            "PLAN_ITEM_INCONSISTENT",
+            "PLAN_ACTION_NOT_REUSE",
+            "CURRENT_CANDIDATE_NOT_IN_INVENTORY",
+            "CURRENT_CANDIDATE_AMBIGUOUS",
+            "ATTESTATION_SUBJECT_NOT_PREVIOUS_DRAFT",
+            "ATTESTATION_CLAIM_TEXT_NOT_PREVIOUS_CANDIDATE",
+            "ATTESTATION_SCOPE_NOT_CLAIM",
+            "ATTESTATION_VERDICT_NOT_SUPPORTED",
+            "ATTESTATION_SCORE_INVALID",
+            "ATTESTATION_SCORE_BELOW_THRESHOLD",
+            "CHECKER_NOT_TRUSTED",
+            "ATTESTATION_CHECKED_AT_INVALID",
+            "ATTESTATION_FROM_FUTURE",
+            "ATTESTATION_STALE",
+            "CLAIM_PIN_MISSING",
+            "CLAIM_BINDING_HASH_MISMATCH",
+            "EVIDENCE_SNAPSHOT_MISMATCH",
+            "EVIDENCE_HASH_MISMATCH",
+            "CLAIM_JURISDICTION_MISMATCH",
+            "CLAIM_DOMAIN_MISMATCH",
+            "SOURCE_CURRENCY_CONFIRMATION_INVALID",
+            "SOURCE_CURRENCY_CONFIRMATION_FROM_FUTURE",
+            "SOURCE_CURRENCY_STALE"
+          ]
+        },
+        "message": { "type": "string", "minLength": 1 }
+      }
+    },
+    "currentCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The single current-draft candidate a reuse authorization applies to, located by canonical hash in the recomputed current inventory. A candidate that cannot be located uniquely refuses the decision instead of guessing a position.",
+      "required": ["index", "hash", "fingerprint"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "hash": { "$ref": "#/$defs/sha256" },
+        "fingerprint": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One claim-scoped decision. planIndex and planAction are present only when the mapping found exactly one plan item; the runtime reader additionally rejects them when the mapping result is NOT_IN_PLAN or AMBIGUOUS, and rejects a stored outcome that contradicts its own blockers.",
+      "required": [
+        "boundAttestationHash",
+        "attestationHash",
+        "claimId",
+        "mappingResult",
+        "previousCandidateIndex",
+        "previousCandidateHash",
+        "outcome",
+        "blockers",
+        "reasons"
+      ],
+      "properties": {
+        "boundAttestationHash": { "$ref": "#/$defs/sha256" },
+        "attestationHash": { "$ref": "#/$defs/sha256" },
+        "claimId": { "type": "string", "minLength": 1 },
+        "mappingResult": {
+          "enum": ["MATCHED_REUSE_ITEM", "REVALIDATION_REQUIRED", "NOT_IN_PLAN", "AMBIGUOUS"],
+          "description": "Copied from the recomputed prior-attestation mapping. MATCHED_REUSE_ITEM is an association, and by itself is still not reuse authorization."
+        },
+        "planIndex": { "type": "integer", "minimum": 0 },
+        "planAction": { "enum": ["REUSE", "REVERIFY", "ADDED", "REMOVED", "UNCERTAIN"] },
+        "previousCandidateIndex": { "type": "integer", "minimum": 0 },
+        "previousCandidateHash": { "$ref": "#/$defs/sha256" },
+        "currentCandidate": { "$ref": "#/$defs/currentCandidate" },
+        "outcome": {
+          "enum": [
+            "REUSE_AUTHORIZED",
+            "REVERIFY_REQUIRED",
+            "POLICY_BLOCKED",
+            "HUMAN_REVIEW_REQUIRED"
+          ],
+          "description": "REUSE_AUTHORIZED authorizes reuse of this one attestation for the one named current candidate under this policy at this asOf. REVERIFY_REQUIRED means the plan says the claim changed. POLICY_BLOCKED means the named policy refused. HUMAN_REVIEW_REQUIRED means this runtime cannot deterministically classify the claim."
+        },
+        "blockers": {
+          "type": "array",
+          "description": "Sorted, unique, and empty exactly when the outcome is REUSE_AUTHORIZED.",
+          "items": { "$ref": "#/$defs/blocker" }
+        },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mappingResult": { "enum": ["MATCHED_REUSE_ITEM", "REVALIDATION_REQUIRED"] }
+            }
+          },
+          "then": { "required": ["planIndex", "planAction"] }
+        },
+        {
+          "if": { "properties": { "mappingResult": { "const": "REVALIDATION_REQUIRED" } } },
+          "then": {
+            "properties": {
+              "planAction": { "enum": ["REVERIFY", "ADDED", "REMOVED", "UNCERTAIN"] },
+              "outcome": {
+                "enum": ["REVERIFY_REQUIRED", "POLICY_BLOCKED", "HUMAN_REVIEW_REQUIRED"]
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "mappingResult": { "enum": ["NOT_IN_PLAN", "AMBIGUOUS"] } } },
+          "then": {
+            "properties": {
+              "outcome": {
+                "enum": ["REVERIFY_REQUIRED", "POLICY_BLOCKED", "HUMAN_REVIEW_REQUIRED"]
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "outcome": { "const": "REUSE_AUTHORIZED" } } },
+          "then": {
+            "required": ["planIndex", "planAction", "currentCandidate"],
+            "properties": {
+              "mappingResult": { "const": "MATCHED_REUSE_ITEM" },
+              "planAction": { "const": "REUSE" },
+              "blockers": { "type": "array", "maxItems": 0 }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

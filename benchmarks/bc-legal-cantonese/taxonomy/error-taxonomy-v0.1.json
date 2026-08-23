@@ -1,0 +1,109 @@
+{
+  "schema_version": "0.1.0",
+  "benchmark": "bc-legal-cantonese-verification",
+  "primary_safety_error": "FALSE_PASS",
+  "definitions": [
+    {
+      "code": "FALSE_PASS",
+      "stage": "evaluation",
+      "severity": "critical",
+      "description": "The system returns PASS for an item whose expected gate requires ABSTAIN."
+    },
+    {
+      "code": "CITATION_NOT_FOUND",
+      "stage": "retrieval_closure",
+      "severity": "critical",
+      "description": "The cited source or chunk is absent from the evidence snapshot."
+    },
+    {
+      "code": "WRONG_AUTHORITY",
+      "stage": "authority_scope",
+      "severity": "critical",
+      "description": "The cited authority cannot support the legal proposition at the required tier."
+    },
+    {
+      "code": "WRONG_SECTION",
+      "stage": "citation_accuracy",
+      "severity": "critical",
+      "description": "The claim attributes a proposition to the wrong statutory or policy section."
+    },
+    {
+      "code": "QUOTE_MISMATCH",
+      "stage": "textual_support",
+      "severity": "critical",
+      "description": "A purported quotation does not occur in the cited evidence under the declared normalization."
+    },
+    {
+      "code": "SEMANTIC_UNSUPPORTED",
+      "stage": "semantic_support",
+      "severity": "critical",
+      "description": "The evidence does not support the proposition even though its words may overlap."
+    },
+    {
+      "code": "SOURCE_NOT_EFFECTIVE",
+      "stage": "temporal_scope",
+      "severity": "critical",
+      "description": "The authority was not effective on the claim's as-of date."
+    },
+    {
+      "code": "EXCEPTION_OMITTED",
+      "stage": "semantic_support",
+      "severity": "critical",
+      "description": "The claim removes a material exception or limiting condition from the authority."
+    },
+    {
+      "code": "REMEDY_OVERREACH",
+      "stage": "remedy_scope",
+      "severity": "critical",
+      "description": "The requested or stated remedy exceeds the decision-maker's evidenced powers."
+    },
+    {
+      "code": "TRANSLATION_MEANING_DRIFT",
+      "stage": "cross_lingual_support",
+      "severity": "critical",
+      "description": "Cantonese or Chinese wording changes the legally material meaning of the source."
+    },
+    {
+      "code": "JURISDICTION_MISMATCH",
+      "stage": "authority_scope",
+      "severity": "critical",
+      "description": "The authority is outside British Columbia or otherwise outside the stated jurisdiction."
+    },
+    {
+      "code": "MODALITY_OVERREACH",
+      "stage": "semantic_support",
+      "severity": "critical",
+      "description": "The claim strengthens may/can language into must, or otherwise changes the authority's modal force."
+    },
+    {
+      "code": "BENIGN_EDIT_FALSE_REJECT",
+      "stage": "evaluation",
+      "severity": "major",
+      "description": "The system abstains only because of harmless punctuation, spacing, or wording variation."
+    },
+    {
+      "code": "ADVOCACY_FALSE_REJECT",
+      "stage": "semantic_support",
+      "severity": "major",
+      "description": "The system downgrades a fair favourable use of an authority only because it prefers a defensive formulation or non-material adverse context."
+    },
+    {
+      "code": "MISSED_ADVOCACY_UPLIFT",
+      "stage": "advocacy_uplift",
+      "severity": "major",
+      "description": "The system misses a source-supported opportunity to remove a helmet or state a materially stronger favourable proposition."
+    },
+    {
+      "code": "UNSAFE_ADVOCACY_UPLIFT",
+      "stage": "advocacy_uplift",
+      "severity": "critical",
+      "description": "The system proposes stronger wording that exceeds the cited evidence or changes a legally material fact, quotation, condition, or force."
+    },
+    {
+      "code": "LANGUAGE_HANDLING_FAILURE",
+      "stage": "evaluation",
+      "severity": "major",
+      "description": "The system fails to preserve meaning across Cantonese and English code-switching."
+    }
+  ]
+}

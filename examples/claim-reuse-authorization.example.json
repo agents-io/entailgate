@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "claim-reuse-authorization",
+  "engineVersion": "0.1.1",
+  "extractorVersion": "0.2.0-baseline.5",
+  "asOf": "2026-08-23T00:00:00.000Z",
+  "policyHash": "2b869dbb11c6b281f7ed9afa2720409916e0924363125bc4cc76913666c2f489",
+  "policy": {
+    "policyId": "synthetic-example-reuse-policy",
+    "domain": "synthetic-example",
+    "jurisdiction": "SYNTHETIC",
+    "minScore": 0.9,
+    "maxAttestationAgeDays": 30,
+    "maxSourceCurrencyAgeDays": 7,
+    "trustedCheckers": [
+      {
+        "checkerName": "synthetic-example-checker",
+        "checkerVersion": "0.0.0",
+        "checkerKind": "human"
+      }
+    ],
+    "claimPins": [
+      {
+        "claimId": "SYN-001",
+        "claimBindingHash": "a1493fbeff41cb3e882bd3f7bda764bbe32e75c017f2215dc5c408c553cf626d",
+        "snapshotId": "synthetic-snapshot-001",
+        "evidenceHash": "bb9c8f99564f7f0f4656650a1152b8e86580c6f3593efd1d4b3804897510dc99",
+        "jurisdiction": "SYNTHETIC",
+        "domain": "synthetic-example",
+        "sourceCurrencyConfirmedAsOf": "2026-08-22T00:00:00.000Z"
+      },
+      {
+        "claimId": "SYN-002",
+        "claimBindingHash": "3a61fc25c8a0a2a172048dc82638875a9f56c23ae394a06d17fba34743545bcd",
+        "snapshotId": "synthetic-snapshot-001",
+        "evidenceHash": "32f999ad8c1d5280047db653b1f18f34094833b87b6b28100f9920c364983b23",
+        "jurisdiction": "SYNTHETIC",
+        "domain": "synthetic-example",
+        "sourceCurrencyConfirmedAsOf": "2026-08-22T00:00:00.000Z"
+      }
+    ]
+  },
+  "trace": {
+    "artifactHash": "3f2f307558fec80da2ba0e5fbae528cf942ff0a60e5a6c68265f72e27161ddb1",
+    "previousSubjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+    "currentSubjectSha256": "c710fd05ec6a419d897b26ca517c0b1b99372a3d524405e1e2d4a1e8eb9737c5",
+    "priorAttestationsHash": "fd4aaf32b4eb77a5acf47f9e7602d7a1278b5c74975a3c08416e38e182405b99",
+    "mappingHash": "789949e89ba8c73b9ef3e94f02852f24baeeb6104d7e5c6c630e3c8188734a9b",
+    "mappingStatus": "COMPLETE"
+  },
+  "documentRelease": {
+    "status": "DOCUMENT_REVIEW_REQUIRED",
+    "coverageComplete": false,
+    "reasons": [
+      "Automatic candidate extraction never asserts complete coverage, so this artifact cannot release the document.",
+      "A claim-scoped REUSE_AUTHORIZED decision saves re-verifying that one claim. It does not satisfy coverage, added-claim, removed-claim, uncertain-claim, action, or authority requirements for the document.",
+      "Document release remains a separate decision made against a complete, hash-matched current claim inventory."
+    ]
+  },
+  "decisions": [
+    {
+      "boundAttestationHash": "4466857b07f9cfcb3c49a61d4ca7f3b2000350f844154f47029c3b4aab79b840",
+      "attestationHash": "e80bcf15a237c29611785c0d8280da9b74e765c3f92bdb08ad35876c010fc853",
+      "claimId": "SYN-001",
+      "mappingResult": "MATCHED_REUSE_ITEM",
+      "planIndex": 1,
+      "planAction": "REUSE",
+      "previousCandidateIndex": 1,
+      "previousCandidateHash": "ffbd9f21b02967ae0490e1566708fd304cb72ed7cf37124ba23612c1793a969c",
+      "currentCandidate": {
+        "index": 1,
+        "hash": "da136606910b4303f78fdd64ee2b8916bceecb4349416fbf52a7b9af63f4e553",
+        "fingerprint": "b2299717b887c427891d59361e2b9d7817de74c1fc46761cc8750d1385315eff"
+      },
+      "outcome": "REUSE_AUTHORIZED",
+      "blockers": [],
+      "reasons": [
+        "Every deterministic gate passed, so the claim-scoped attestation for SYN-001 may be reused for current-draft candidate 1.",
+        "The previous and current candidate texts may differ. What was proved is that the extractor's protected fingerprint is unchanged and that every pinned binding matched.",
+        "This authorizes one claim. It is not a verification PASS and it does not release the document."
+      ]
+    },
+    {
+      "boundAttestationHash": "a3fe4d08a48117faac2e90620932c52ade9441c1388e1ed7cb27d8542aa316bb",
+      "attestationHash": "3b65798141dd5b8f5fd06996121cd549b3215119bbb88707ceb8d40425042503",
+      "claimId": "SYN-002",
+      "mappingResult": "REVALIDATION_REQUIRED",
+      "planIndex": 2,
+      "planAction": "REVERIFY",
+      "previousCandidateIndex": 2,
+      "previousCandidateHash": "0692e78d089a3087c2a9f52df6e2ef70472ac8439892124d690e12d8af9e3be4",
+      "outcome": "REVERIFY_REQUIRED",
+      "blockers": [
+        {
+          "code": "PLAN_ACTION_NOT_REUSE",
+          "message": "The associated plan item's action is REVERIFY, not REUSE, so this claim must be verified again."
+        }
+      ],
+      "reasons": [
+        "Reuse is refused for SYN-002: PLAN_ACTION_NOT_REUSE.",
+        "A refusal is fail-closed. It means this artifact cannot prove reuse is safe, not that the claim is false."
+      ]
+    }
+  ],
+  "reasons": [
+    "REUSE_AUTHORIZED authorizes reuse of one claim-scoped semantic attestation for one named current-draft candidate, under the stored policy, at the stored asOf. It is not a verification PASS, not a document release, and not a statement that the claim is true.",
+    "Every decision here is claim-scoped. This artifact never produces a whole-document verdict, and a reusable claim never becomes an approved document.",
+    "Automatic claim extraction reports incomplete coverage, so the document as a whole still requires a separately validated coverage process and human review even when a claim is reusable.",
+    "This runtime cannot read a jurisdiction, a domain, or a source effective date out of a SemanticAttestation. It proves only that the attestation carries exactly the claimBindingHash, snapshotId, and evidenceHash the policy pinned; the jurisdiction, domain, and source-currency confirmation are caller declarations, recorded and age-gated here, not independently verified.",
+    "REUSE_AUTHORIZED inherits the extractor's protected-fingerprint judgement that the previous and current candidates are the same claim. It is only as strong as the extractor version recorded in the underlying revision-plan trace.",
+    "The gate reads and replays the revision-plan trace itself. A trace that fails to read, that changes during evaluation, or that does not replay to its stored artifact hash yields no authorization at all.",
+    "No attestation is authorized unless the prior-attestation mapping status is COMPLETE, so one unmapped or ambiguous attestation refuses the whole batch instead of authorizing its well-formed neighbours.",
+    "asOf is a caller-supplied evaluation instant bound into evaluationHash. It is deterministic input, not authenticated time.",
+    "authorizationId and createdAt sit outside evaluationHash, so the same trace, policy, and asOf reproduce the same identity. They are envelope metadata, not authenticated provenance.",
+    "A stored decision is never authoritative. A reader must replay this artifact against the revision-plan trace, which recomputes every hash and every decision from the trace and the stored policy."
+  ],
+  "authorizationId": "20260823000000000-synthetic02",
+  "createdAt": "2026-08-23T00:00:00.000Z",
+  "evaluationHash": "b251dc9d8f388175dbb51e41f5af729c9290055698ef13ca5472bc2f15d571f6"
+}

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "0.1.0",
+  "requestId": "demo-pass-001",
+  "requestedAt": "2026-08-22T19:00:00-07:00",
+  "domain": "business-sms",
+  "question": "Can I book the 2 pm slot and what is the tax?",
+  "subject": {
+    "subjectId": "draft-reply-001",
+    "mediaType": "text/plain",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "coverage": {
+    "complete": true,
+    "method": "manual_inventory",
+    "subjectSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "evidence": {
+    "schemaVersion": "0.1.0",
+    "snapshotId": "business-snapshot-001",
+    "createdAt": "2026-08-22T18:55:00-07:00",
+    "domain": "business-sms",
+    "sources": [
+      {
+        "sourceId": "owner-config",
+        "title": "Published owner configuration",
+        "sourceType": "business_config",
+        "authorityTier": "user_provided",
+        "retrievedAt": "2026-08-22T18:55:00-07:00"
+      }
+    ],
+    "chunks": [
+      {
+        "chunkId": "hours-1",
+        "sourceId": "owner-config",
+        "text": "We open Monday to Friday, 9:00–17:00.",
+        "structuredFacts": {
+          "hours": "Monday to Friday, 9:00–17:00"
+        }
+      },
+      {
+        "chunkId": "slot-1",
+        "sourceId": "owner-config",
+        "text": "The 2 pm slot is available.",
+        "structuredFacts": {
+          "slotId": "slot-42",
+          "basePrice": 100,
+          "taxRate": 0.12
+        }
+      }
+    ]
+  },
+  "retrievedChunkIds": ["hours-1", "slot-1"],
+  "claims": [
+    {
+      "claimId": "c-hours",
+      "text": "We open Monday to Friday, 9:00–17:00.",
+      "material": true,
+      "selfContained": true,
+      "risk": "low",
+      "citations": [{ "sourceId": "owner-config", "chunkId": "hours-1" }],
+      "proof": {
+        "kind": "exact_quote",
+        "quote": "We open Monday to Friday, 9:00–17:00.",
+        "normalization": "exact"
+      }
+    },
+    {
+      "claimId": "c-slot",
+      "text": "The selected slot ID is slot-42.",
+      "material": true,
+      "selfContained": true,
+      "risk": "medium",
+      "citations": [{ "sourceId": "owner-config", "chunkId": "slot-1" }],
+      "proof": {
+        "kind": "structured_fact",
+        "field": "slotId",
+        "expected": "slot-42"
+      }
+    },
+    {
+      "claimId": "c-tax",
+      "text": "Tax is $12.",
+      "material": true,
+      "selfContained": true,
+      "risk": "medium",
+      "citations": [{ "sourceId": "owner-config", "chunkId": "slot-1" }],
+      "proof": {
+        "kind": "derived",
+        "operation": "multiply",
+        "operands": [100, 0.12],
+        "expected": 12,
+        "bindings": [
+          {
+            "operandIndex": 0,
+            "sourceId": "owner-config",
+            "chunkId": "slot-1",
+            "field": "basePrice"
+          },
+          {
+            "operandIndex": 1,
+            "sourceId": "owner-config",
+            "chunkId": "slot-1",
+            "field": "taxRate"
+          }
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "a-book",
+      "type": "book_slot",
+      "args": {
+        "slotId": "slot-42",
+        "customerPhone": "+16045550123"
+      },
+      "bindings": [
+        {
+          "argPath": "slotId",
+          "sourceId": "owner-config",
+          "chunkId": "slot-1",
+          "field": "slotId"
+        }
+      ],
+      "idempotencyKey": "booking-customer-123-slot-42"
+    }
+  ],
+  "policy": {
+    "policyId": "business-demo-v1",
+    "riskTier": "medium",
+    "requireCompleteCoverage": true,
+    "requireRetrievedCitationClosure": true,
+    "allowClaimScopedAttestations": false,
+    "allowNormalizedClaimReuse": false,
+    "maxSourceAgeDays": 1,
+    "allowedActions": {
+      "book_slot": {
+        "requiredArgs": ["slotId", "customerPhone"],
+        "allowedArgs": ["slotId", "customerPhone"],
+        "requireBindings": ["slotId"],
+        "requireIdempotencyKey": true,
+        "requireConfirmation": false
+      }
+    }
+  }
+}

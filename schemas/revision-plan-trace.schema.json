@@ -1,0 +1,461 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpware.dev/schemas/ebr/0.2.1/revision-plan-trace.schema.json",
+  "title": "RevisionPlanTrace",
+  "description": "Replayable audit artifact for one deterministic claim-inventory comparison, optionally carrying the semantic attestations bound to the previous draft and their deterministic mapping onto the plan. It is separate from the v0.1 AuditTrace, carries no verification decision, asserts no semantic verdict, and authorizes no attestation reuse.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "traceId",
+    "createdAt",
+    "engineVersion",
+    "extractorVersion",
+    "comparisonOptions",
+    "previousSubject",
+    "currentSubject",
+    "previousInventoryHash",
+    "currentInventoryHash",
+    "planHash",
+    "artifactHash",
+    "priorAttestationsHash",
+    "priorAttestationMapping",
+    "reasons",
+    "previousInventory",
+    "currentInventory",
+    "comparison",
+    "priorAttestations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.2.1" },
+    "kind": { "const": "revision-plan" },
+    "traceId": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "engineVersion": { "type": "string", "minLength": 1 },
+    "extractorVersion": { "type": "string", "minLength": 1 },
+    "comparisonOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxFuzzyComparisons"],
+      "description": "The resolved bounded fuzzy-matching budget the stored plan was produced with. A replay reuses it instead of assuming the current default.",
+      "properties": {
+        "maxFuzzyComparisons": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "previousSubject": {
+      "allOf": [
+        { "$ref": "#/$defs/subjectText" },
+        { "properties": { "role": { "const": "previous" } } }
+      ]
+    },
+    "currentSubject": {
+      "allOf": [
+        { "$ref": "#/$defs/subjectText" },
+        { "properties": { "role": { "const": "current" } } }
+      ]
+    },
+    "previousInventoryHash": { "$ref": "#/$defs/sha256" },
+    "currentInventoryHash": { "$ref": "#/$defs/sha256" },
+    "planHash": { "$ref": "#/$defs/sha256" },
+    "artifactHash": {
+      "$ref": "#/$defs/sha256",
+      "description": "hashObject over schemaVersion, kind, engineVersion, extractorVersion, comparisonOptions, both subject records, the three component hashes, priorAttestationsHash, priorAttestationMapping, and reasons. traceId and createdAt are excluded so the same revision reproduces the same hash."
+    },
+    "priorAttestationsHash": {
+      "$ref": "#/$defs/sha256",
+      "description": "hashObject over the priorAttestations array exactly as stored. A reader MUST recompute it from the stored wrappers rather than trust it."
+    },
+    "priorAttestationMapping": { "$ref": "#/$defs/priorAttestationMapping" },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "previousInventory": { "$ref": "#/$defs/claimInventory" },
+    "currentInventory": { "$ref": "#/$defs/claimInventory" },
+    "comparison": { "$ref": "#/$defs/inventoryComparison" },
+    "priorAttestations": {
+      "type": "array",
+      "description": "Semantic attestations bound to a candidate position in the previous draft, canonically sorted ascending and unique by boundAttestationHash. An empty array means no prior attestation was supplied. Presence here is association only and never authorizes reuse.",
+      "items": { "$ref": "#/$defs/boundSemanticAttestation" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "subjectText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "sha256", "text"],
+      "properties": {
+        "role": { "enum": ["previous", "current"] },
+        "sha256": {
+          "$ref": "#/$defs/sha256",
+          "description": "Audit identity of the stored text. Not a semantic verdict."
+        },
+        "text": { "type": "string" }
+      }
+    },
+    "semanticAttestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A claim-scoped semantic attestation exactly as it was produced elsewhere. Embedding it here records what was attested; it does not re-assert the verdict.",
+      "required": [
+        "claimId",
+        "checkerName",
+        "checkerVersion",
+        "checkerKind",
+        "bindingScope",
+        "verdict",
+        "score",
+        "reasons",
+        "checkedAt",
+        "subjectSha256",
+        "snapshotId",
+        "claimTextHash",
+        "claimBindingHash",
+        "evidenceHash"
+      ],
+      "properties": {
+        "claimId": { "type": "string", "minLength": 1 },
+        "checkerName": { "type": "string", "minLength": 1 },
+        "checkerVersion": { "type": "string", "minLength": 1 },
+        "checkerKind": { "enum": ["human", "model", "hybrid"] },
+        "bindingScope": {
+          "const": "claim",
+          "description": "Only a claim-scoped attestation can be bound to a candidate position."
+        },
+        "verdict": { "enum": ["SUPPORTED", "PARTIAL", "CONTRADICTED", "NOT_FOUND"] },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "subjectSha256": { "$ref": "#/$defs/sha256" },
+        "snapshotId": { "type": "string", "minLength": 1 },
+        "claimTextHash": { "$ref": "#/$defs/sha256" },
+        "claimFingerprint": {
+          "$ref": "#/$defs/sha256",
+          "description": "Optional. Computed over the isolated claim text, so it binds an empty heading path and is never the basis of the mapping."
+        },
+        "claimBindingHash": { "$ref": "#/$defs/sha256" },
+        "evidenceHash": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "draftCandidateBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The explicit binding of an attestation to exactly one candidate position in the previous inventory, by index rather than by text or fingerprint, because repeated sentences share a fingerprint.",
+      "required": [
+        "schemaVersion",
+        "kind",
+        "extractorVersion",
+        "subjectSha256",
+        "inventoryHash",
+        "candidateIndex",
+        "candidateHash",
+        "candidateFingerprint",
+        "bindingHash"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "0.2.0" },
+        "kind": { "const": "draft-candidate-binding" },
+        "extractorVersion": { "type": "string", "minLength": 1 },
+        "subjectSha256": { "$ref": "#/$defs/sha256" },
+        "inventoryHash": { "$ref": "#/$defs/sha256" },
+        "candidateIndex": { "type": "integer", "minimum": 0 },
+        "candidateHash": { "$ref": "#/$defs/sha256" },
+        "candidateFingerprint": {
+          "$ref": "#/$defs/sha256",
+          "description": "Contextual fingerprint of the bound position. It legitimately differs from the attestation's isolated claimFingerprint."
+        },
+        "bindingHash": {
+          "$ref": "#/$defs/sha256",
+          "description": "hashObject over every other field of this binding. A reader MUST recompute it."
+        }
+      }
+    },
+    "boundSemanticAttestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "kind",
+        "attestation",
+        "attestationHash",
+        "draftBinding",
+        "boundAttestationHash"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "0.2.0" },
+        "kind": { "const": "bound-semantic-attestation" },
+        "attestation": { "$ref": "#/$defs/semanticAttestation" },
+        "attestationHash": {
+          "$ref": "#/$defs/sha256",
+          "description": "hashObject over the embedded attestation. A reader MUST recompute it."
+        },
+        "draftBinding": { "$ref": "#/$defs/draftCandidateBinding" },
+        "boundAttestationHash": {
+          "$ref": "#/$defs/sha256",
+          "description": "hashObject over attestationHash and the draft binding's bindingHash. A reader MUST recompute it."
+        }
+      }
+    },
+    "priorAttestationMappingEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One bound attestation associated with at most one plan item, by canonical hash equality only. planIndex and planAction are present only for a result that found exactly one plan item; the runtime reader additionally rejects them when the result is NOT_IN_PLAN or AMBIGUOUS.",
+      "required": [
+        "boundAttestationHash",
+        "attestationHash",
+        "claimId",
+        "candidateBindingHash",
+        "previousCandidateIndex",
+        "result",
+        "reasons"
+      ],
+      "properties": {
+        "boundAttestationHash": { "$ref": "#/$defs/sha256" },
+        "attestationHash": { "$ref": "#/$defs/sha256" },
+        "claimId": { "type": "string", "minLength": 1 },
+        "candidateBindingHash": { "$ref": "#/$defs/sha256" },
+        "previousCandidateIndex": { "type": "integer", "minimum": 0 },
+        "planIndex": { "type": "integer", "minimum": 0 },
+        "planAction": { "enum": ["REUSE", "REVERIFY", "ADDED", "REMOVED", "UNCERTAIN"] },
+        "result": {
+          "enum": ["MATCHED_REUSE_ITEM", "REVALIDATION_REQUIRED", "NOT_IN_PLAN", "AMBIGUOUS"],
+          "description": "MATCHED_REUSE_ITEM records that the associated plan item is REUSE. It is not a semantic PASS and not reuse authorization."
+        },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": { "enum": ["MATCHED_REUSE_ITEM", "REVALIDATION_REQUIRED"] }
+            }
+          },
+          "then": { "required": ["planIndex", "planAction"] }
+        },
+        {
+          "if": { "properties": { "result": { "const": "MATCHED_REUSE_ITEM" } } },
+          "then": { "properties": { "planAction": { "const": "REUSE" } } }
+        },
+        {
+          "if": { "properties": { "result": { "const": "REVALIDATION_REQUIRED" } } },
+          "then": {
+            "properties": {
+              "planAction": { "enum": ["REVERIFY", "ADDED", "REMOVED", "UNCERTAIN"] }
+            }
+          }
+        }
+      ]
+    },
+    "priorAttestationMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Deterministic association between the stored priorAttestations and the comparison plan. It is versioned separately from this trace. NOT_ATTEMPTED means no attestation was supplied; COMPLETE means every supplied attestation was associated with exactly one plan item, and is not reuse authorization.",
+      "required": [
+        "schemaVersion",
+        "kind",
+        "status",
+        "priorAttestationsHash",
+        "entries",
+        "unmappedBoundAttestationHashes",
+        "reasons",
+        "mappingHash"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "0.2.0" },
+        "kind": { "const": "prior-attestation-mapping" },
+        "status": { "enum": ["NOT_ATTEMPTED", "COMPLETE", "INCOMPLETE"] },
+        "priorAttestationsHash": {
+          "$ref": "#/$defs/sha256",
+          "description": "MUST equal the trace's priorAttestationsHash, so a mapping cannot be read against a different attestation set."
+        },
+        "entries": {
+          "type": "array",
+          "description": "Sorted ascending and unique by boundAttestationHash, one entry per stored prior attestation.",
+          "items": { "$ref": "#/$defs/priorAttestationMappingEntry" }
+        },
+        "unmappedBoundAttestationHashes": {
+          "type": "array",
+          "description": "Sorted ascending and unique. Exactly the entries whose result is NOT_IN_PLAN or AMBIGUOUS.",
+          "items": { "$ref": "#/$defs/sha256" }
+        },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "mappingHash": {
+          "$ref": "#/$defs/sha256",
+          "description": "hashObject over every other field of this mapping. A reader MUST recompute it."
+        }
+      }
+    },
+    "materialSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "citation",
+            "quotation",
+            "date",
+            "number",
+            "legal_section",
+            "deadline",
+            "remedy",
+            "actor_attribution",
+            "legal_proposition"
+          ]
+        },
+        "value": { "type": "string" }
+      }
+    },
+    "candidateAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "normalizedText",
+        "fingerprint",
+        "comparisonFingerprint",
+        "comparisonTokens",
+        "classification",
+        "material",
+        "materialSignals",
+        "semanticRole",
+        "reasons",
+        "uncertainty",
+        "context",
+        "locator"
+      ],
+      "properties": {
+        "text": { "type": "string" },
+        "normalizedText": { "type": "string" },
+        "fingerprint": { "$ref": "#/$defs/sha256" },
+        "comparisonFingerprint": { "$ref": "#/$defs/sha256" },
+        "comparisonTokens": { "type": "array", "items": { "type": "string" } },
+        "classification": { "enum": ["MATERIAL_CANDIDATE", "PROSE_ONLY"] },
+        "material": { "type": "boolean" },
+        "materialSignals": { "type": "array", "items": { "$ref": "#/$defs/materialSignal" } },
+        "semanticRole": { "enum": ["assertion", "heading", "fenced_code", "indented_code"] },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "uncertainty": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["level", "reasons"],
+          "properties": {
+            "level": { "enum": ["LOW", "MEDIUM", "HIGH"] },
+            "reasons": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["headingPath", "headingLevels", "dependsOnPrevious"],
+          "properties": {
+            "headingPath": { "type": "array", "items": { "type": "string" } },
+            "headingLevels": { "type": "array", "items": { "type": "integer" } },
+            "dependsOnPrevious": { "type": "boolean" },
+            "priorContextHash": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "blockIndex",
+            "sentenceIndex",
+            "lineStart",
+            "lineEnd",
+            "startOffset",
+            "endOffset"
+          ],
+          "properties": {
+            "blockIndex": { "type": "integer", "minimum": 0 },
+            "sentenceIndex": { "type": "integer", "minimum": 0 },
+            "lineStart": { "type": "integer", "minimum": 0 },
+            "lineEnd": { "type": "integer", "minimum": 0 },
+            "startOffset": { "type": "integer", "minimum": 0 },
+            "endOffset": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "claimInventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extractorVersion", "subjectSha256", "candidates", "coverage"],
+      "properties": {
+        "extractorVersion": { "type": "string", "minLength": 1 },
+        "subjectSha256": { "$ref": "#/$defs/sha256" },
+        "candidates": { "type": "array", "items": { "$ref": "#/$defs/candidateAssertion" } },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["complete", "method", "reasons"],
+          "properties": {
+            "complete": {
+              "const": false,
+              "description": "Automatic extraction never asserts complete coverage."
+            },
+            "method": { "const": "deterministic_candidate_extraction" },
+            "reasons": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "inventoryPlanItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "requiresRevalidation", "reviewKind", "reason"],
+      "description": "Only REUSE may set requiresRevalidation=false and reviewKind=NONE. A reader must reject an item whose action and consequences disagree.",
+      "properties": {
+        "action": { "enum": ["REUSE", "REVERIFY", "ADDED", "REMOVED", "UNCERTAIN"] },
+        "requiresRevalidation": { "type": "boolean" },
+        "reviewKind": { "enum": ["NONE", "MATERIALITY", "SOURCE_SUPPORT"] },
+        "reason": { "type": "string", "minLength": 1 },
+        "before": { "$ref": "#/$defs/candidateAssertion" },
+        "after": { "$ref": "#/$defs/candidateAssertion" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "action": { "const": "REUSE" } } },
+          "then": {
+            "properties": {
+              "requiresRevalidation": { "const": false },
+              "reviewKind": { "const": "NONE" }
+            }
+          },
+          "else": {
+            "properties": {
+              "requiresRevalidation": { "const": true },
+              "reviewKind": { "enum": ["MATERIALITY", "SOURCE_SUPPORT"] }
+            }
+          }
+        }
+      ]
+    },
+    "inventoryComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "previousSubjectSha256",
+        "currentSubjectSha256",
+        "wholeDocumentChanged",
+        "coverageComplete",
+        "fuzzyComparisons",
+        "fuzzyComparisonLimitReached",
+        "plan",
+        "reasons"
+      ],
+      "properties": {
+        "previousSubjectSha256": { "$ref": "#/$defs/sha256" },
+        "currentSubjectSha256": { "$ref": "#/$defs/sha256" },
+        "wholeDocumentChanged": {
+          "type": "boolean",
+          "description": "Audit identity changed. This alone never invalidates a claim."
+        },
+        "coverageComplete": { "const": false },
+        "fuzzyComparisons": { "type": "integer", "minimum": 0 },
+        "fuzzyComparisonLimitReached": { "type": "boolean" },
+        "plan": { "type": "array", "items": { "$ref": "#/$defs/inventoryPlanItem" } },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

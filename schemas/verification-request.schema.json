@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpware.dev/schemas/ebr/0.1/verification-request.schema.json",
+  "title": "VerifyRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "requestedAt",
+    "domain",
+    "subject",
+    "coverage",
+    "evidence",
+    "retrievedChunkIds",
+    "claims",
+    "policy"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "requestedAt": { "type": "string", "format": "date-time" },
+    "domain": { "type": "string", "minLength": 1 },
+    "question": { "type": "string" },
+    "subject": { "$ref": "#/$defs/subject" },
+    "coverage": { "$ref": "#/$defs/coverage" },
+    "evidence": {
+      "$ref": "evidence-snapshot.schema.json"
+    },
+    "retrievedChunkIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "semanticAttestations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/semanticAttestation" }
+    },
+    "actions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/action" }
+    },
+    "policy": { "$ref": "#/$defs/policy" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "actionPath": {
+      "type": "string",
+      "minLength": 1,
+      "allOf": [
+        { "pattern": "^[^.]+(?:\\.[^.]+)*$" },
+        { "pattern": "^(?:[^.]*\\S[^.]*)(?:\\.[^.]*\\S[^.]*)*$" },
+        { "not": { "pattern": "(^|\\.)(__proto__|prototype|constructor)(\\.|$)" } }
+      ]
+    },
+    "authorityTier": {
+      "enum": ["primary", "official_guidance", "secondary", "user_provided", "unknown"]
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjectId", "mediaType", "sha256"],
+      "properties": {
+        "subjectId": { "type": "string", "minLength": 1 },
+        "mediaType": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "path": { "type": "string" }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["complete", "method", "subjectSha256"],
+      "properties": {
+        "complete": { "type": "boolean" },
+        "method": { "enum": ["manual_inventory", "extractor", "hybrid"] },
+        "subjectSha256": { "$ref": "#/$defs/sha256" },
+        "reviewer": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceId", "chunkId"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "chunkId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claimId", "text", "material", "risk", "citations", "proof"],
+      "properties": {
+        "claimId": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "material": { "type": "boolean" },
+        "risk": { "enum": ["low", "medium", "high"] },
+        "selfContained": { "type": "boolean" },
+        "citations": { "type": "array", "items": { "$ref": "#/$defs/citation" } },
+        "proof": { "$ref": "#/$defs/proof" },
+        "jurisdiction": { "type": "string" },
+        "asOf": { "type": "string", "format": "date-time" },
+        "requiredAuthority": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/authorityTier" }
+        },
+        "draftLocator": { "type": "string" }
+      }
+    },
+    "proof": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "quote"],
+          "properties": {
+            "kind": { "const": "exact_quote" },
+            "quote": { "type": "string", "minLength": 1 },
+            "normalization": { "enum": ["exact", "unicode", "whitespace"] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "field", "expected"],
+          "properties": {
+            "kind": { "const": "structured_fact" },
+            "field": { "type": "string", "minLength": 1 },
+            "expected": {}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "operation", "operands", "expected", "bindings"],
+          "properties": {
+            "kind": { "const": "derived" },
+            "operation": { "enum": ["add", "subtract", "multiply", "divide", "date_add_days"] },
+            "operands": { "type": "array", "minItems": 2 },
+            "expected": {},
+            "bindings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["operandIndex", "sourceId", "chunkId", "field"],
+                "properties": {
+                  "operandIndex": { "type": "integer", "minimum": 0 },
+                  "sourceId": { "type": "string" },
+                  "chunkId": { "type": "string" },
+                  "field": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": { "const": "semantic" }
+          }
+        }
+      ]
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actionId", "type", "args", "bindings"],
+      "properties": {
+        "actionId": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "args": { "type": "object" },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["argPath", "sourceId", "chunkId", "field"],
+            "properties": {
+              "argPath": { "$ref": "#/$defs/actionPath" },
+              "sourceId": { "type": "string" },
+              "chunkId": { "type": "string" },
+              "field": { "type": "string" }
+            }
+          }
+        },
+        "idempotencyKey": { "type": "string", "minLength": 1 }
+      }
+    },
+    "semanticAttestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claimId",
+        "checkerName",
+        "checkerVersion",
+        "checkerKind",
+        "verdict",
+        "score",
+        "reasons",
+        "checkedAt",
+        "subjectSha256",
+        "snapshotId",
+        "claimTextHash",
+        "claimBindingHash",
+        "evidenceHash"
+      ],
+      "properties": {
+        "claimId": { "type": "string", "minLength": 1 },
+        "checkerName": { "type": "string", "minLength": 1 },
+        "checkerVersion": { "type": "string", "minLength": 1 },
+        "checkerKind": { "enum": ["human", "model", "hybrid"] },
+        "bindingScope": { "enum": ["subject", "claim"] },
+        "verdict": { "enum": ["SUPPORTED", "PARTIAL", "CONTRADICTED", "NOT_FOUND"] },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "subjectSha256": { "$ref": "#/$defs/sha256" },
+        "snapshotId": { "type": "string", "minLength": 1 },
+        "claimTextHash": { "$ref": "#/$defs/sha256" },
+        "claimFingerprint": { "$ref": "#/$defs/sha256" },
+        "claimBindingHash": { "$ref": "#/$defs/sha256" },
+        "evidenceHash": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "allowedAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredArgs"],
+      "properties": {
+        "requiredArgs": { "type": "array", "items": { "$ref": "#/$defs/actionPath" } },
+        "allowedArgs": { "type": "array", "items": { "$ref": "#/$defs/actionPath" } },
+        "requireBindings": { "type": "array", "items": { "$ref": "#/$defs/actionPath" } },
+        "requireIdempotencyKey": { "type": "boolean" },
+        "requireConfirmation": { "type": "boolean" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policyId",
+        "riskTier",
+        "requireCompleteCoverage",
+        "requireRetrievedCitationClosure"
+      ],
+      "properties": {
+        "policyId": { "type": "string", "minLength": 1 },
+        "riskTier": { "enum": ["low", "medium", "high"] },
+        "requireCompleteCoverage": { "type": "boolean" },
+        "requireRetrievedCitationClosure": { "type": "boolean" },
+        "maxSourceAgeDays": { "type": "number", "minimum": 0 },
+        "trustedSemanticCheckers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 3 }
+        },
+        "allowClaimScopedAttestations": { "type": "boolean" },
+        "allowNormalizedClaimReuse": { "type": "boolean" },
+        "allowedActions": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/allowedAction" }
+        }
+      }
+    }
+  }
+}

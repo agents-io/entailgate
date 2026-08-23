@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpware.dev/schemas/ebr/0.1/verification-result.schema.json",
+  "title": "VerificationResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "engineVersion",
+    "requestId",
+    "inputHash",
+    "decision",
+    "coverage",
+    "claims",
+    "actions",
+    "findings"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "engineVersion": { "type": "string" },
+    "requestId": { "type": "string" },
+    "inputHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "decision": { "enum": ["PASS", "REWRITE", "ASK", "ABSTAIN", "HUMAN_REVIEW"] },
+    "coverage": { "enum": ["COMPLETE", "INCOMPLETE", "MISMATCH"] },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claimId",
+          "claimText",
+          "assurance",
+          "verdict",
+          "validCitations",
+          "checkerScores",
+          "findings"
+        ],
+        "properties": {
+          "claimId": { "type": "string" },
+          "claimText": { "type": "string" },
+          "assurance": { "enum": ["EXACT", "STRUCTURED", "DERIVED", "SEMANTIC", "NONE"] },
+          "verdict": { "enum": ["SUPPORTED", "PARTIAL", "CONTRADICTED", "NOT_FOUND", "UNCHECKED"] },
+          "validCitations": { "type": "array" },
+          "checkerScores": { "type": "object", "additionalProperties": { "type": "number" } },
+          "findings": { "type": "array" }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actionId", "type", "decision", "findings"],
+        "properties": {
+          "actionId": { "type": "string" },
+          "type": { "type": "string" },
+          "decision": { "enum": ["ALLOW", "DENY", "CONFIRM", "REVIEW"] },
+          "findings": { "type": "array" }
+        }
+      }
+    },
+    "findings": { "type": "array" }
+  }
+}

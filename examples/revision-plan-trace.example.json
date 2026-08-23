@@ -1,0 +1,869 @@
+{
+  "schemaVersion": "0.2.1",
+  "kind": "revision-plan",
+  "engineVersion": "0.1.1",
+  "extractorVersion": "0.2.0-baseline.5",
+  "comparisonOptions": {
+    "maxFuzzyComparisons": 250000
+  },
+  "previousSubject": {
+    "role": "previous",
+    "sha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+    "text": "# Synthetic Grounds\n\nMe received the application on 2024-01-05.\n\nThe applicant relied on section 23 of the Act."
+  },
+  "currentSubject": {
+    "role": "current",
+    "sha256": "c710fd05ec6a419d897b26ca517c0b1b99372a3d524405e1e2d4a1e8eb9737c5",
+    "text": "# Synthetic Grounds\n\nI received the application on 2024-01-05.\n\nThe applicant relied on section 24 of the Act."
+  },
+  "previousInventoryHash": "4ecf382ad80a22666b16df2489491a15975aadfccaf1c4c1cf74a7939f697aae",
+  "currentInventoryHash": "5a95389fdb412cef7fddc8937d3eb1e6eda77099216d0fb182071abd901d782c",
+  "planHash": "1ab53439996261907722505f023b9a709dab55039dce765123ee9ac2872609fd",
+  "priorAttestationsHash": "fd4aaf32b4eb77a5acf47f9e7602d7a1278b5c74975a3c08416e38e182405b99",
+  "priorAttestationMapping": {
+    "schemaVersion": "0.2.0",
+    "kind": "prior-attestation-mapping",
+    "status": "COMPLETE",
+    "priorAttestationsHash": "fd4aaf32b4eb77a5acf47f9e7602d7a1278b5c74975a3c08416e38e182405b99",
+    "entries": [
+      {
+        "boundAttestationHash": "4466857b07f9cfcb3c49a61d4ca7f3b2000350f844154f47029c3b4aab79b840",
+        "attestationHash": "e80bcf15a237c29611785c0d8280da9b74e765c3f92bdb08ad35876c010fc853",
+        "claimId": "SYN-001",
+        "candidateBindingHash": "33111e67989a60d131914e59d5130ca891587c6e59d248eaf9f37867794905b9",
+        "previousCandidateIndex": 1,
+        "planIndex": 1,
+        "planAction": "REUSE",
+        "result": "MATCHED_REUSE_ITEM",
+        "reasons": [
+          "Exactly one plan item (index 1) has a `before` hash equal to the bound candidateHash, with action REUSE.",
+          "This is a positional association only; it is not evidence validation, a semantic PASS, complete extraction, or reuse authorization."
+        ]
+      },
+      {
+        "boundAttestationHash": "a3fe4d08a48117faac2e90620932c52ade9441c1388e1ed7cb27d8542aa316bb",
+        "attestationHash": "3b65798141dd5b8f5fd06996121cd549b3215119bbb88707ceb8d40425042503",
+        "claimId": "SYN-002",
+        "candidateBindingHash": "2dfe3fd66585210a4b8b6c8949ad6375640b9891f92a7ebffaa0d857d04c5141",
+        "previousCandidateIndex": 2,
+        "planIndex": 2,
+        "planAction": "REVERIFY",
+        "result": "REVALIDATION_REQUIRED",
+        "reasons": [
+          "Exactly one plan item (index 2) has a `before` hash equal to the bound candidateHash, with action REVERIFY (not REUSE), so revalidation is required.",
+          "This is a positional association only; it is not evidence validation, a semantic PASS, complete extraction, or reuse authorization."
+        ]
+      }
+    ],
+    "unmappedBoundAttestationHashes": [],
+    "reasons": [
+      "This mapping is a positional association between a bound attestation and a comparison plan item, established only by canonical hash equality; it is not evidence validation.",
+      "A MATCHED_REUSE_ITEM or REVALIDATION_REQUIRED result is not a semantic PASS verdict on the underlying claim.",
+      "This mapping does not establish or imply complete automatic claim extraction; the inventory's own coverage statement remains incomplete.",
+      "A mapped entry does not authorize reuse of the attestation; reuse authorization is a separate decision made elsewhere."
+    ],
+    "mappingHash": "789949e89ba8c73b9ef3e94f02852f24baeeb6104d7e5c6c630e3c8188734a9b"
+  },
+  "reasons": [
+    "Each subject SHA-256 is the audit identity of the stored text. It is not a semantic verdict and it does not by itself invalidate any claim.",
+    "artifactHash binds the engine version, the extractor version, the fuzzy-comparison budget, both stored subject texts, and the canonical inventory and plan hashes. It deliberately excludes traceId and createdAt so the same revision reproduces the same artifactHash.",
+    "traceId and createdAt are therefore envelope metadata, not authenticated provenance: they are outside artifactHash and an edit to either is not detectable from this artifact alone.",
+    "REUSE inside the plan means a protected claim fingerprint is unchanged. It does not assert that the claim is true, that its evidence still supports it, or that extraction was complete.",
+    "priorAttestations holds the bound semantic attestations supplied for the previous draft, canonicalized and sorted by boundAttestationHash. artifactHash binds their canonical hash and the prior-attestation mapping, so neither can be added, dropped, or reordered without breaking this artifact.",
+    "Each attestation is associated with a plan item through the explicit draft-candidate binding it carries, never through a fingerprint coincidence: an isolated claim fingerprint binds an empty heading path, while an in-draft candidate fingerprint binds heading path, heading levels, semantic role, and antecedent context.",
+    "The mapping proves association and deterministic recomputation only. It is not evidence validation, not a semantic verdict, and not proof that the checker or model that produced an attestation can be trusted, that its citations are correct, that its sources are current, or that its jurisdiction is right.",
+    "A MATCHED_REUSE_ITEM entry, and a COMPLETE mapping status, are not reuse authorization. Whether a prior attestation may be reused stays a verifier-policy decision made outside this artifact.",
+    "A COMPLETE mapping status means only that every supplied attestation was associated with exactly one plan item. It says nothing about attestations nobody supplied, and it does not make automatic extraction complete."
+  ],
+  "traceId": "20260823000000000-synthetic01",
+  "createdAt": "2026-08-23T00:00:00.000Z",
+  "artifactHash": "3f2f307558fec80da2ba0e5fbae528cf942ff0a60e5a6c68265f72e27161ddb1",
+  "previousInventory": {
+    "extractorVersion": "0.2.0-baseline.5",
+    "subjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+    "candidates": [
+      {
+        "text": "Synthetic Grounds",
+        "normalizedText": "synthetic grounds",
+        "fingerprint": "31925f696efdc68661a33e07dccf52786f7ccc2358062d1c30543d5a985cfa86",
+        "comparisonFingerprint": "f1f68339fc81126ab39f1baf5112d9840e767273db6bb1b175e64356cd21ddc2",
+        "comparisonTokens": [
+          "synthetic",
+          "grounds"
+        ],
+        "classification": "PROSE_ONLY",
+        "material": false,
+        "materialSignals": [],
+        "semanticRole": "heading",
+        "reasons": [
+          "No deterministic material signal was detected."
+        ],
+        "uncertainty": {
+          "level": "HIGH",
+          "reasons": [
+            "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage.",
+            "Prose-only text can still contain a material proposition outside the allowlisted patterns."
+          ]
+        },
+        "context": {
+          "headingPath": [],
+          "headingLevels": [],
+          "dependsOnPrevious": false
+        },
+        "locator": {
+          "blockIndex": 0,
+          "sentenceIndex": 0,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "startOffset": 0,
+          "endOffset": 19
+        }
+      },
+      {
+        "text": "Me received the application on 2024-01-05.",
+        "normalizedText": "<first_person> received the application on 2024-01-05",
+        "fingerprint": "b2299717b887c427891d59361e2b9d7817de74c1fc46761cc8750d1385315eff",
+        "comparisonFingerprint": "b8eb471d9016c61e36bbe9b39d07497f9256b63abb7af4dbf6a5fb251a35104b",
+        "comparisonTokens": [
+          "<first_person>",
+          "<predicate>",
+          "the",
+          "application",
+          "on",
+          "date"
+        ],
+        "classification": "MATERIAL_CANDIDATE",
+        "material": true,
+        "materialSignals": [
+          {
+            "kind": "date",
+            "value": "2024-01-05"
+          },
+          {
+            "kind": "actor_attribution",
+            "value": "Me received"
+          },
+          {
+            "kind": "number",
+            "value": "2024"
+          },
+          {
+            "kind": "number",
+            "value": "01"
+          },
+          {
+            "kind": "number",
+            "value": "05"
+          }
+        ],
+        "semanticRole": "assertion",
+        "reasons": [
+          "Detected date: 2024-01-05",
+          "Detected actor_attribution: Me received",
+          "Detected number: 2024",
+          "Detected number: 01",
+          "Detected number: 05"
+        ],
+        "uncertainty": {
+          "level": "MEDIUM",
+          "reasons": [
+            "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+          ]
+        },
+        "context": {
+          "headingPath": [
+            "Synthetic Grounds"
+          ],
+          "headingLevels": [
+            1
+          ],
+          "dependsOnPrevious": false
+        },
+        "locator": {
+          "blockIndex": 1,
+          "sentenceIndex": 0,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "startOffset": 21,
+          "endOffset": 63
+        }
+      },
+      {
+        "text": "The applicant relied on section 23 of the Act.",
+        "normalizedText": "the applicant relied on section 23 of the act",
+        "fingerprint": "a0408dbe72117bde07e56ced1819f1158127dde2c611dabddc277378ba222ed0",
+        "comparisonFingerprint": "3aa28685d156e7e825fcc6b87bed26b64b8ff052d19bc5f4850f38ca9949ece8",
+        "comparisonTokens": [
+          "the",
+          "applicant",
+          "relied",
+          "on",
+          "legal",
+          "section",
+          "of",
+          "the",
+          "act"
+        ],
+        "classification": "MATERIAL_CANDIDATE",
+        "material": true,
+        "materialSignals": [
+          {
+            "kind": "legal_section",
+            "value": "section 23"
+          },
+          {
+            "kind": "number",
+            "value": "23"
+          }
+        ],
+        "semanticRole": "assertion",
+        "reasons": [
+          "Detected legal_section: section 23",
+          "Detected number: 23"
+        ],
+        "uncertainty": {
+          "level": "MEDIUM",
+          "reasons": [
+            "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+          ]
+        },
+        "context": {
+          "headingPath": [
+            "Synthetic Grounds"
+          ],
+          "headingLevels": [
+            1
+          ],
+          "dependsOnPrevious": false
+        },
+        "locator": {
+          "blockIndex": 2,
+          "sentenceIndex": 0,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "startOffset": 65,
+          "endOffset": 111
+        }
+      }
+    ],
+    "coverage": {
+      "complete": false,
+      "method": "deterministic_candidate_extraction",
+      "reasons": [
+        "Automatic extraction is a conservative candidate inventory, not an exhaustive semantic inventory.",
+        "Unrecognized wording, compound assertions, tables, formatting, and implicit propositions may be missed or split incorrectly.",
+        "High-risk use still requires manual or independently validated coverage attestation."
+      ]
+    }
+  },
+  "currentInventory": {
+    "extractorVersion": "0.2.0-baseline.5",
+    "subjectSha256": "c710fd05ec6a419d897b26ca517c0b1b99372a3d524405e1e2d4a1e8eb9737c5",
+    "candidates": [
+      {
+        "text": "Synthetic Grounds",
+        "normalizedText": "synthetic grounds",
+        "fingerprint": "31925f696efdc68661a33e07dccf52786f7ccc2358062d1c30543d5a985cfa86",
+        "comparisonFingerprint": "f1f68339fc81126ab39f1baf5112d9840e767273db6bb1b175e64356cd21ddc2",
+        "comparisonTokens": [
+          "synthetic",
+          "grounds"
+        ],
+        "classification": "PROSE_ONLY",
+        "material": false,
+        "materialSignals": [],
+        "semanticRole": "heading",
+        "reasons": [
+          "No deterministic material signal was detected."
+        ],
+        "uncertainty": {
+          "level": "HIGH",
+          "reasons": [
+            "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage.",
+            "Prose-only text can still contain a material proposition outside the allowlisted patterns."
+          ]
+        },
+        "context": {
+          "headingPath": [],
+          "headingLevels": [],
+          "dependsOnPrevious": false
+        },
+        "locator": {
+          "blockIndex": 0,
+          "sentenceIndex": 0,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "startOffset": 0,
+          "endOffset": 19
+        }
+      },
+      {
+        "text": "I received the application on 2024-01-05.",
+        "normalizedText": "<first_person> received the application on 2024-01-05",
+        "fingerprint": "b2299717b887c427891d59361e2b9d7817de74c1fc46761cc8750d1385315eff",
+        "comparisonFingerprint": "b8eb471d9016c61e36bbe9b39d07497f9256b63abb7af4dbf6a5fb251a35104b",
+        "comparisonTokens": [
+          "<first_person>",
+          "<predicate>",
+          "the",
+          "application",
+          "on",
+          "date"
+        ],
+        "classification": "MATERIAL_CANDIDATE",
+        "material": true,
+        "materialSignals": [
+          {
+            "kind": "date",
+            "value": "2024-01-05"
+          },
+          {
+            "kind": "actor_attribution",
+            "value": "I received"
+          },
+          {
+            "kind": "number",
+            "value": "2024"
+          },
+          {
+            "kind": "number",
+            "value": "01"
+          },
+          {
+            "kind": "number",
+            "value": "05"
+          }
+        ],
+        "semanticRole": "assertion",
+        "reasons": [
+          "Detected date: 2024-01-05",
+          "Detected actor_attribution: I received",
+          "Detected number: 2024",
+          "Detected number: 01",
+          "Detected number: 05"
+        ],
+        "uncertainty": {
+          "level": "MEDIUM",
+          "reasons": [
+            "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+          ]
+        },
+        "context": {
+          "headingPath": [
+            "Synthetic Grounds"
+          ],
+          "headingLevels": [
+            1
+          ],
+          "dependsOnPrevious": false
+        },
+        "locator": {
+          "blockIndex": 1,
+          "sentenceIndex": 0,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "startOffset": 21,
+          "endOffset": 62
+        }
+      },
+      {
+        "text": "The applicant relied on section 24 of the Act.",
+        "normalizedText": "the applicant relied on section 24 of the act",
+        "fingerprint": "2903b394c2f05d6c8dffe03619317e77efb725a7e81e6a3c7a7ea194ac6f0aa1",
+        "comparisonFingerprint": "3aa28685d156e7e825fcc6b87bed26b64b8ff052d19bc5f4850f38ca9949ece8",
+        "comparisonTokens": [
+          "the",
+          "applicant",
+          "relied",
+          "on",
+          "legal",
+          "section",
+          "of",
+          "the",
+          "act"
+        ],
+        "classification": "MATERIAL_CANDIDATE",
+        "material": true,
+        "materialSignals": [
+          {
+            "kind": "legal_section",
+            "value": "section 24"
+          },
+          {
+            "kind": "number",
+            "value": "24"
+          }
+        ],
+        "semanticRole": "assertion",
+        "reasons": [
+          "Detected legal_section: section 24",
+          "Detected number: 24"
+        ],
+        "uncertainty": {
+          "level": "MEDIUM",
+          "reasons": [
+            "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+          ]
+        },
+        "context": {
+          "headingPath": [
+            "Synthetic Grounds"
+          ],
+          "headingLevels": [
+            1
+          ],
+          "dependsOnPrevious": false
+        },
+        "locator": {
+          "blockIndex": 2,
+          "sentenceIndex": 0,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "startOffset": 64,
+          "endOffset": 110
+        }
+      }
+    ],
+    "coverage": {
+      "complete": false,
+      "method": "deterministic_candidate_extraction",
+      "reasons": [
+        "Automatic extraction is a conservative candidate inventory, not an exhaustive semantic inventory.",
+        "Unrecognized wording, compound assertions, tables, formatting, and implicit propositions may be missed or split incorrectly.",
+        "High-risk use still requires manual or independently validated coverage attestation."
+      ]
+    }
+  },
+  "comparison": {
+    "previousSubjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+    "currentSubjectSha256": "c710fd05ec6a419d897b26ca517c0b1b99372a3d524405e1e2d4a1e8eb9737c5",
+    "wholeDocumentChanged": true,
+    "coverageComplete": false,
+    "fuzzyComparisons": 1,
+    "fuzzyComparisonLimitReached": false,
+    "plan": [
+      {
+        "action": "REUSE",
+        "requiresRevalidation": false,
+        "reviewKind": "NONE",
+        "reason": "The location-independent claim fingerprint is unchanged.",
+        "before": {
+          "text": "Synthetic Grounds",
+          "normalizedText": "synthetic grounds",
+          "fingerprint": "31925f696efdc68661a33e07dccf52786f7ccc2358062d1c30543d5a985cfa86",
+          "comparisonFingerprint": "f1f68339fc81126ab39f1baf5112d9840e767273db6bb1b175e64356cd21ddc2",
+          "comparisonTokens": [
+            "synthetic",
+            "grounds"
+          ],
+          "classification": "PROSE_ONLY",
+          "material": false,
+          "materialSignals": [],
+          "semanticRole": "heading",
+          "reasons": [
+            "No deterministic material signal was detected."
+          ],
+          "uncertainty": {
+            "level": "HIGH",
+            "reasons": [
+              "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage.",
+              "Prose-only text can still contain a material proposition outside the allowlisted patterns."
+            ]
+          },
+          "context": {
+            "headingPath": [],
+            "headingLevels": [],
+            "dependsOnPrevious": false
+          },
+          "locator": {
+            "blockIndex": 0,
+            "sentenceIndex": 0,
+            "lineStart": 1,
+            "lineEnd": 1,
+            "startOffset": 0,
+            "endOffset": 19
+          }
+        },
+        "after": {
+          "text": "Synthetic Grounds",
+          "normalizedText": "synthetic grounds",
+          "fingerprint": "31925f696efdc68661a33e07dccf52786f7ccc2358062d1c30543d5a985cfa86",
+          "comparisonFingerprint": "f1f68339fc81126ab39f1baf5112d9840e767273db6bb1b175e64356cd21ddc2",
+          "comparisonTokens": [
+            "synthetic",
+            "grounds"
+          ],
+          "classification": "PROSE_ONLY",
+          "material": false,
+          "materialSignals": [],
+          "semanticRole": "heading",
+          "reasons": [
+            "No deterministic material signal was detected."
+          ],
+          "uncertainty": {
+            "level": "HIGH",
+            "reasons": [
+              "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage.",
+              "Prose-only text can still contain a material proposition outside the allowlisted patterns."
+            ]
+          },
+          "context": {
+            "headingPath": [],
+            "headingLevels": [],
+            "dependsOnPrevious": false
+          },
+          "locator": {
+            "blockIndex": 0,
+            "sentenceIndex": 0,
+            "lineStart": 1,
+            "lineEnd": 1,
+            "startOffset": 0,
+            "endOffset": 19
+          }
+        }
+      },
+      {
+        "action": "REUSE",
+        "requiresRevalidation": false,
+        "reviewKind": "NONE",
+        "reason": "The location-independent claim fingerprint is unchanged.",
+        "before": {
+          "text": "Me received the application on 2024-01-05.",
+          "normalizedText": "<first_person> received the application on 2024-01-05",
+          "fingerprint": "b2299717b887c427891d59361e2b9d7817de74c1fc46761cc8750d1385315eff",
+          "comparisonFingerprint": "b8eb471d9016c61e36bbe9b39d07497f9256b63abb7af4dbf6a5fb251a35104b",
+          "comparisonTokens": [
+            "<first_person>",
+            "<predicate>",
+            "the",
+            "application",
+            "on",
+            "date"
+          ],
+          "classification": "MATERIAL_CANDIDATE",
+          "material": true,
+          "materialSignals": [
+            {
+              "kind": "date",
+              "value": "2024-01-05"
+            },
+            {
+              "kind": "actor_attribution",
+              "value": "Me received"
+            },
+            {
+              "kind": "number",
+              "value": "2024"
+            },
+            {
+              "kind": "number",
+              "value": "01"
+            },
+            {
+              "kind": "number",
+              "value": "05"
+            }
+          ],
+          "semanticRole": "assertion",
+          "reasons": [
+            "Detected date: 2024-01-05",
+            "Detected actor_attribution: Me received",
+            "Detected number: 2024",
+            "Detected number: 01",
+            "Detected number: 05"
+          ],
+          "uncertainty": {
+            "level": "MEDIUM",
+            "reasons": [
+              "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+            ]
+          },
+          "context": {
+            "headingPath": [
+              "Synthetic Grounds"
+            ],
+            "headingLevels": [
+              1
+            ],
+            "dependsOnPrevious": false
+          },
+          "locator": {
+            "blockIndex": 1,
+            "sentenceIndex": 0,
+            "lineStart": 3,
+            "lineEnd": 3,
+            "startOffset": 21,
+            "endOffset": 63
+          }
+        },
+        "after": {
+          "text": "I received the application on 2024-01-05.",
+          "normalizedText": "<first_person> received the application on 2024-01-05",
+          "fingerprint": "b2299717b887c427891d59361e2b9d7817de74c1fc46761cc8750d1385315eff",
+          "comparisonFingerprint": "b8eb471d9016c61e36bbe9b39d07497f9256b63abb7af4dbf6a5fb251a35104b",
+          "comparisonTokens": [
+            "<first_person>",
+            "<predicate>",
+            "the",
+            "application",
+            "on",
+            "date"
+          ],
+          "classification": "MATERIAL_CANDIDATE",
+          "material": true,
+          "materialSignals": [
+            {
+              "kind": "date",
+              "value": "2024-01-05"
+            },
+            {
+              "kind": "actor_attribution",
+              "value": "I received"
+            },
+            {
+              "kind": "number",
+              "value": "2024"
+            },
+            {
+              "kind": "number",
+              "value": "01"
+            },
+            {
+              "kind": "number",
+              "value": "05"
+            }
+          ],
+          "semanticRole": "assertion",
+          "reasons": [
+            "Detected date: 2024-01-05",
+            "Detected actor_attribution: I received",
+            "Detected number: 2024",
+            "Detected number: 01",
+            "Detected number: 05"
+          ],
+          "uncertainty": {
+            "level": "MEDIUM",
+            "reasons": [
+              "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+            ]
+          },
+          "context": {
+            "headingPath": [
+              "Synthetic Grounds"
+            ],
+            "headingLevels": [
+              1
+            ],
+            "dependsOnPrevious": false
+          },
+          "locator": {
+            "blockIndex": 1,
+            "sentenceIndex": 0,
+            "lineStart": 3,
+            "lineEnd": 3,
+            "startOffset": 21,
+            "endOffset": 62
+          }
+        }
+      },
+      {
+        "action": "REVERIFY",
+        "requiresRevalidation": true,
+        "reviewKind": "SOURCE_SUPPORT",
+        "reason": "The likely corresponding assertion changed its protected surface, context, material value, quotation, remedy, attribution, or proposition fingerprint.",
+        "before": {
+          "text": "The applicant relied on section 23 of the Act.",
+          "normalizedText": "the applicant relied on section 23 of the act",
+          "fingerprint": "a0408dbe72117bde07e56ced1819f1158127dde2c611dabddc277378ba222ed0",
+          "comparisonFingerprint": "3aa28685d156e7e825fcc6b87bed26b64b8ff052d19bc5f4850f38ca9949ece8",
+          "comparisonTokens": [
+            "the",
+            "applicant",
+            "relied",
+            "on",
+            "legal",
+            "section",
+            "of",
+            "the",
+            "act"
+          ],
+          "classification": "MATERIAL_CANDIDATE",
+          "material": true,
+          "materialSignals": [
+            {
+              "kind": "legal_section",
+              "value": "section 23"
+            },
+            {
+              "kind": "number",
+              "value": "23"
+            }
+          ],
+          "semanticRole": "assertion",
+          "reasons": [
+            "Detected legal_section: section 23",
+            "Detected number: 23"
+          ],
+          "uncertainty": {
+            "level": "MEDIUM",
+            "reasons": [
+              "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+            ]
+          },
+          "context": {
+            "headingPath": [
+              "Synthetic Grounds"
+            ],
+            "headingLevels": [
+              1
+            ],
+            "dependsOnPrevious": false
+          },
+          "locator": {
+            "blockIndex": 2,
+            "sentenceIndex": 0,
+            "lineStart": 5,
+            "lineEnd": 5,
+            "startOffset": 65,
+            "endOffset": 111
+          }
+        },
+        "after": {
+          "text": "The applicant relied on section 24 of the Act.",
+          "normalizedText": "the applicant relied on section 24 of the act",
+          "fingerprint": "2903b394c2f05d6c8dffe03619317e77efb725a7e81e6a3c7a7ea194ac6f0aa1",
+          "comparisonFingerprint": "3aa28685d156e7e825fcc6b87bed26b64b8ff052d19bc5f4850f38ca9949ece8",
+          "comparisonTokens": [
+            "the",
+            "applicant",
+            "relied",
+            "on",
+            "legal",
+            "section",
+            "of",
+            "the",
+            "act"
+          ],
+          "classification": "MATERIAL_CANDIDATE",
+          "material": true,
+          "materialSignals": [
+            {
+              "kind": "legal_section",
+              "value": "section 24"
+            },
+            {
+              "kind": "number",
+              "value": "24"
+            }
+          ],
+          "semanticRole": "assertion",
+          "reasons": [
+            "Detected legal_section: section 24",
+            "Detected number: 24"
+          ],
+          "uncertainty": {
+            "level": "MEDIUM",
+            "reasons": [
+              "This deterministic baseline identifies candidates; it does not prove semantic atomicity or complete coverage."
+            ]
+          },
+          "context": {
+            "headingPath": [
+              "Synthetic Grounds"
+            ],
+            "headingLevels": [
+              1
+            ],
+            "dependsOnPrevious": false
+          },
+          "locator": {
+            "blockIndex": 2,
+            "sentenceIndex": 0,
+            "lineStart": 5,
+            "lineEnd": 5,
+            "startOffset": 64,
+            "endOffset": 110
+          }
+        }
+      }
+    ],
+    "reasons": [
+      "Whole-document hashes are retained as audit identities and do not cause blanket revalidation.",
+      "Only exact protected claim fingerprints are reusable; fuzzy or generalized matches route to REVERIFY or UNCERTAIN and never inherit an attestation.",
+      "Fuzzy matching completed within the configured 250000-comparison limit.",
+      "Automatic comparison does not establish complete semantic claim coverage."
+    ]
+  },
+  "priorAttestations": [
+    {
+      "schemaVersion": "0.2.0",
+      "kind": "bound-semantic-attestation",
+      "attestation": {
+        "claimId": "SYN-001",
+        "checkerName": "synthetic-example-checker",
+        "checkerVersion": "0.0.0",
+        "checkerKind": "human",
+        "bindingScope": "claim",
+        "verdict": "SUPPORTED",
+        "score": 1,
+        "reasons": [
+          "Synthetic example attestation. It attests to nothing real."
+        ],
+        "checkedAt": "2026-08-22T00:00:00.000Z",
+        "subjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+        "snapshotId": "synthetic-snapshot-001",
+        "claimTextHash": "180682201e298dc2f154a79cef416038874c00dbf39c05011347c83fa5c865c7",
+        "claimBindingHash": "a1493fbeff41cb3e882bd3f7bda764bbe32e75c017f2215dc5c408c553cf626d",
+        "evidenceHash": "bb9c8f99564f7f0f4656650a1152b8e86580c6f3593efd1d4b3804897510dc99"
+      },
+      "attestationHash": "e80bcf15a237c29611785c0d8280da9b74e765c3f92bdb08ad35876c010fc853",
+      "draftBinding": {
+        "schemaVersion": "0.2.0",
+        "kind": "draft-candidate-binding",
+        "extractorVersion": "0.2.0-baseline.5",
+        "subjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+        "inventoryHash": "4ecf382ad80a22666b16df2489491a15975aadfccaf1c4c1cf74a7939f697aae",
+        "candidateIndex": 1,
+        "candidateHash": "ffbd9f21b02967ae0490e1566708fd304cb72ed7cf37124ba23612c1793a969c",
+        "candidateFingerprint": "b2299717b887c427891d59361e2b9d7817de74c1fc46761cc8750d1385315eff",
+        "bindingHash": "33111e67989a60d131914e59d5130ca891587c6e59d248eaf9f37867794905b9"
+      },
+      "boundAttestationHash": "4466857b07f9cfcb3c49a61d4ca7f3b2000350f844154f47029c3b4aab79b840"
+    },
+    {
+      "schemaVersion": "0.2.0",
+      "kind": "bound-semantic-attestation",
+      "attestation": {
+        "claimId": "SYN-002",
+        "checkerName": "synthetic-example-checker",
+        "checkerVersion": "0.0.0",
+        "checkerKind": "human",
+        "bindingScope": "claim",
+        "verdict": "SUPPORTED",
+        "score": 1,
+        "reasons": [
+          "Synthetic example attestation. It attests to nothing real."
+        ],
+        "checkedAt": "2026-08-22T00:00:00.000Z",
+        "subjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+        "snapshotId": "synthetic-snapshot-001",
+        "claimTextHash": "f46bebd1ed7799342c28621f329900a1e3bd18fd066382af0a1829dc7ca6f81a",
+        "claimBindingHash": "3a61fc25c8a0a2a172048dc82638875a9f56c23ae394a06d17fba34743545bcd",
+        "evidenceHash": "32f999ad8c1d5280047db653b1f18f34094833b87b6b28100f9920c364983b23"
+      },
+      "attestationHash": "3b65798141dd5b8f5fd06996121cd549b3215119bbb88707ceb8d40425042503",
+      "draftBinding": {
+        "schemaVersion": "0.2.0",
+        "kind": "draft-candidate-binding",
+        "extractorVersion": "0.2.0-baseline.5",
+        "subjectSha256": "c69325abdff6d1c6ddba32a2a2973bb99731d0c9a501169ae342cf2bcdbcc17e",
+        "inventoryHash": "4ecf382ad80a22666b16df2489491a15975aadfccaf1c4c1cf74a7939f697aae",
+        "candidateIndex": 2,
+        "candidateHash": "0692e78d089a3087c2a9f52df6e2ef70472ac8439892124d690e12d8af9e3be4",
+        "candidateFingerprint": "a0408dbe72117bde07e56ced1819f1158127dde2c611dabddc277378ba222ed0",
+        "bindingHash": "2dfe3fd66585210a4b8b6c8949ad6375640b9891f92a7ebffaa0d857d04c5141"
+      },
+      "boundAttestationHash": "a3fe4d08a48117faac2e90620932c52ade9441c1388e1ed7cb27d8542aa316bb"
+    }
+  ]
+}

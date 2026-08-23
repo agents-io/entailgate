@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpware.dev/schemas/ebr/0.1/evidence-snapshot.schema.json",
+  "title": "EvidenceSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "snapshotId", "createdAt", "domain", "sources", "chunks"],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "snapshotId": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "domain": { "type": "string", "minLength": 1 },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "chunks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/chunk" }
+    }
+  },
+  "$defs": {
+    "authorityTier": {
+      "enum": ["primary", "official_guidance", "secondary", "user_provided", "unknown"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceId", "title", "sourceType", "authorityTier"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "sourceType": { "type": "string", "minLength": 1 },
+        "authorityTier": { "$ref": "#/$defs/authorityTier" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "uri": { "type": "string" },
+        "issuer": { "type": "string" },
+        "version": { "type": "string" },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "effectiveFrom": { "type": "string", "format": "date-time" },
+        "effectiveTo": { "type": "string", "format": "date-time" },
+        "jurisdictions": { "type": "array", "items": { "type": "string" } },
+        "domains": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "chunk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chunkId", "sourceId", "text"],
+      "properties": {
+        "chunkId": { "type": "string", "minLength": 1 },
+        "sourceId": { "type": "string", "minLength": 1 },
+        "text": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "locator": { "type": "string" },
+        "structuredFacts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "object", "array", "null"]
+          }
+        }
+      }
+    }
+  }
+}

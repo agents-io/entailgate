@@ -1,0 +1,14 @@
+node_modules/
+dist/
+traces/
+# Local forward-test reports may contain hashes or other metadata derived from
+# private legal drafts. Keep them out of the product repository.
+docs/qa/REAL-LEGAL-FAIL-FAST-FORWARD-TEST-*.md
+# A dogfood workspace holds a draft snapshot and extracted evidence text. Keep
+# one outside the repository; these patterns are a backstop for the recommended
+# in-tree names, not a substitute for choosing a private location.
+dogfood-workspace/
+*.dogfood-workspace/
+.agent-reports/
+*.tmp
+.DS_Store

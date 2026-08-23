@@ -1,0 +1,27 @@
+{
+  "name": "@mcpware/evidence-bound-runtime",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Deterministic evidence-bound verification kernel for AI text and actions",
+  "type": "module",
+  "bin": {
+    "ebr": "./dist/src/cli.js"
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "spec"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "check": "npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "typescript": "5.8.3"
+  }
+}

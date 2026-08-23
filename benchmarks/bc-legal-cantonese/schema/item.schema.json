@@ -1,0 +1,499 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcpware.dev/schemas/bc-legal-cantonese-benchmark-item-v0.1.json",
+  "title": "BC Legal Cantonese Verification Benchmark Item",
+  "description": "One evidence-bound claim-verification item. Synthetic fixtures are not legal ground truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "item_id",
+    "synthetic",
+    "ground_truth_status",
+    "task",
+    "language_profile",
+    "jurisdiction",
+    "authority_family",
+    "document_family",
+    "group_id",
+    "split",
+    "as_of",
+    "claim",
+    "evidence",
+    "provenance",
+    "expected",
+    "metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "item_id": {
+      "type": "string",
+      "pattern": "^bc-lc-[a-z0-9-]+-[0-9]{3}$"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "ground_truth_status": {
+      "enum": [
+        "synthetic_fixture_not_legal_ground_truth",
+        "public_primary_source_adjudicated",
+        "redacted_expert_consensus"
+      ]
+    },
+    "task": {
+      "const": "verify_claim_against_evidence"
+    },
+    "language_profile": {
+      "enum": [
+        "zh-Hant",
+        "en",
+        "zh-Hant-en-code-switch"
+      ]
+    },
+    "jurisdiction": {
+      "const": "CA-BC"
+    },
+    "authority_family": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "document_family": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "group_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "split": {
+      "enum": [
+        "train",
+        "dev",
+        "test"
+      ]
+    },
+    "as_of": {
+      "$ref": "#/$defs/isoDate"
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "quoted_text",
+        "citation"
+      ],
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "quoted_text": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 8
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "citation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_id",
+            "chunk_id",
+            "locator",
+            "display_citation"
+          ],
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "chunk_id": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "locator": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "display_citation": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "chunk_id",
+        "title",
+        "text",
+        "authority_tier",
+        "document_type",
+        "jurisdiction",
+        "effective_from",
+        "effective_to",
+        "retrieved_at",
+        "source_uri",
+        "source_sha256"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "chunk_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "authority_tier": {
+          "enum": [
+            "primary",
+            "official_guidance",
+            "secondary"
+          ]
+        },
+        "document_type": {
+          "enum": [
+            "statute",
+            "policy",
+            "decision",
+            "official_guidance"
+          ]
+        },
+        "jurisdiction": {
+          "const": "CA-BC"
+        },
+        "effective_from": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "effective_to": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_uri": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_sha256": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data_origin",
+        "is_legal_ground_truth",
+        "contains_private_evidence",
+        "creator",
+        "license_or_terms",
+        "redaction_note"
+      ],
+      "properties": {
+        "data_origin": {
+          "enum": [
+            "synthetic",
+            "public_primary",
+            "redacted_with_permission"
+          ]
+        },
+        "is_legal_ground_truth": {
+          "type": "boolean"
+        },
+        "contains_private_evidence": {
+          "const": false
+        },
+        "creator": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "license_or_terms": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "redaction_note": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "support_status",
+        "must_abstain",
+        "error_tags",
+        "rationale"
+      ],
+      "properties": {
+        "decision": {
+          "enum": [
+            "PASS",
+            "ABSTAIN"
+          ]
+        },
+        "support_status": {
+          "enum": [
+            "EXACT",
+            "SUPPORTED_PARAPHRASE",
+            "CONTRADICTED",
+            "NOT_FOUND",
+            "PARTIAL",
+            "VERSION_MISMATCH"
+          ]
+        },
+        "must_abstain": {
+          "type": "boolean"
+        },
+        "error_tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "CITATION_NOT_FOUND",
+              "WRONG_AUTHORITY",
+              "WRONG_SECTION",
+              "QUOTE_MISMATCH",
+              "SEMANTIC_UNSUPPORTED",
+              "SOURCE_NOT_EFFECTIVE",
+              "EXCEPTION_OMITTED",
+              "REMEDY_OVERREACH",
+              "TRANSLATION_MEANING_DRIFT",
+              "JURISDICTION_MISMATCH",
+              "MODALITY_OVERREACH"
+            ]
+          }
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phenomenon",
+        "difficulty",
+        "generator",
+        "notes"
+      ],
+      "properties": {
+        "phenomenon": {
+          "enum": [
+            "exact_quote",
+            "paraphrase_support",
+            "wrong_statute_section",
+            "outdated_effective_date",
+            "fake_citation",
+            "exception_omitted",
+            "remedy_overreach",
+            "cantonese_english_code_switch",
+            "innocuous_wording_edit"
+          ]
+        },
+        "difficulty": {
+          "enum": [
+            "seed",
+            "standard",
+            "adversarial"
+          ]
+        },
+        "generator": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "synthetic": {
+            "const": true
+          }
+        },
+        "required": [
+          "synthetic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "ground_truth_status": {
+            "const": "synthetic_fixture_not_legal_ground_truth"
+          },
+          "provenance": {
+            "properties": {
+              "data_origin": {
+                "const": "synthetic"
+              },
+              "is_legal_ground_truth": {
+                "const": false
+              }
+            }
+          },
+          "evidence": {
+            "properties": {
+              "source_uri": {
+                "type": "null"
+              },
+              "source_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "synthetic": {
+            "const": false
+          }
+        },
+        "required": [
+          "synthetic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "ground_truth_status": {
+            "enum": [
+              "public_primary_source_adjudicated",
+              "redacted_expert_consensus"
+            ]
+          },
+          "provenance": {
+            "properties": {
+              "data_origin": {
+                "enum": [
+                  "public_primary",
+                  "redacted_with_permission"
+                ]
+              },
+              "is_legal_ground_truth": {
+                "const": true
+              }
+            }
+          },
+          "evidence": {
+            "properties": {
+              "source_uri": {
+                "type": "string",
+                "format": "uri"
+              },
+              "source_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "decision": { "const": "PASS" }
+            },
+            "required": ["decision"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "must_abstain": { "const": false },
+              "support_status": {
+                "enum": ["EXACT", "SUPPORTED_PARAPHRASE"]
+              },
+              "error_tags": { "maxItems": 0 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "decision": { "const": "ABSTAIN" }
+            },
+            "required": ["decision"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "must_abstain": { "const": true },
+              "support_status": {
+                "enum": ["CONTRADICTED", "NOT_FOUND", "PARTIAL", "VERSION_MISMATCH"]
+              },
+              "error_tags": { "minItems": 1 }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "isoDate": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "0.1.0",
+  "requestId": "demo-fail-001",
+  "requestedAt": "2026-08-22T19:00:00-07:00",
+  "domain": "bc-legal",
+  "subject": {
+    "subjectId": "draft-legal-001",
+    "mediaType": "text/markdown",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "coverage": {
+    "complete": true,
+    "method": "manual_inventory",
+    "subjectSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "evidence": {
+    "schemaVersion": "0.1.0",
+    "snapshotId": "legal-snapshot-001",
+    "createdAt": "2026-08-22T18:55:00-07:00",
+    "domain": "bc-legal",
+    "sources": [
+      {
+        "sourceId": "pipa",
+        "title": "Personal Information Protection Act",
+        "sourceType": "statute",
+        "authorityTier": "primary",
+        "retrievedAt": "2026-08-22T18:55:00-07:00",
+        "jurisdictions": ["BC"]
+      }
+    ],
+    "chunks": [
+      {
+        "chunkId": "pipa-s23",
+        "sourceId": "pipa",
+        "text": "Example statutory text."
+      }
+    ]
+  },
+  "retrievedChunkIds": ["pipa-s23"],
+  "claims": [
+    {
+      "claimId": "c-fake",
+      "text": "A fabricated legal quotation.",
+      "material": true,
+      "selfContained": true,
+      "risk": "high",
+      "citations": [{ "sourceId": "pipa", "chunkId": "FAKE-CHUNK" }],
+      "proof": {
+        "kind": "exact_quote",
+        "quote": "This sentence is not in the statute.",
+        "normalization": "exact"
+      },
+      "jurisdiction": "BC",
+      "requiredAuthority": ["primary"]
+    }
+  ],
+  "policy": {
+    "policyId": "bc-legal-v1",
+    "riskTier": "high",
+    "requireCompleteCoverage": true,
+    "requireRetrievedCitationClosure": true,
+    "allowClaimScopedAttestations": false,
+    "allowNormalizedClaimReuse": false,
+    "maxSourceAgeDays": 30
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1.0",
+  "dataset_id": "bc-legal-cantonese-synthetic-seed-v0.1",
+  "created_at": "2026-08-22T12:00:00Z",
+  "immutable": true,
+  "contains_private_evidence": false,
+  "legal_ground_truth": false,
+  "files": [
+    {
+      "path": "synthetic-seed-v0.1.jsonl",
+      "sha256": "bda7ced26205e56524166be50f39d002b90ad693a90f0c7261b5cce0136b7d9f",
+      "record_count": 9,
+      "data_origin": "synthetic"
+    }
+  ],
+  "notice": "All records are synthetic software fixtures, not statements of British Columbia law and not legal ground truth."
+}
