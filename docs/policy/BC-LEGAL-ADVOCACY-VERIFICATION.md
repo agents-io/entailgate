@@ -1,6 +1,6 @@
 # BC legal advocacy verification policy
 
-Status: normative for the `bc-legal` adapter semantic checker.
+Status: normative for Entailgate runs using the legal-advocacy profile.
 
 ## Purpose
 
@@ -18,10 +18,8 @@ It is not:
 > Is this the most cautious formulation that an academic annotator could write after
 > listing every possible adverse qualification?
 
-The adapter is not only defensive. After a cheap deterministic source-integrity
-preflight, it must look for supported ways to make the submission stronger before the
-one full semantic release check. WordFire therefore separates two concerns without
-making both agents reread the raw corpus:
+The legal profile is not only defensive. In `UPLIFT` mode it separates two concerns
+without making both reviewers rediscover or reread the complete Source Box:
 
 1. **Integrity pass:** find objectively provable errors that must be fixed.
 2. **Advocacy uplift pass:** find unnecessary helmets, underclaimed authorities,
@@ -29,14 +27,17 @@ making both agents reread the raw corpus:
    remedies that the evidence permits the writer to state more strongly.
 
 The ordering and shared-input contract are defined in
-[`SHARED-EVIDENCE-PACKETS.md`](../architecture/SHARED-EVIDENCE-PACKETS.md). Raw sources
-are ingested once. Drafting, uplift, and final verification consume different views of
-the same hash-bound evidence packets. The final integrated draft receives the full
-semantic verification once; later edits reverify only changed material claims.
+[`SHARED-EVIDENCE-PACKETS.md`](../architecture/SHARED-EVIDENCE-PACKETS.md). A source
+mapper reads the frozen Source Box and prepares reusable, claim-scoped packets.
+Integrity review, uplift, and final verification reuse those passages and locators.
+Packets save discovery; they do not carry a binding semantic verdict. Every verifier
+must reopen the decisive passage and necessary original context before assigning
+support. Later edits reverify only claims whose material legal content changed, then
+rerun the complete Subject occurrence scan.
 
 ## Default verification scope
 
-WordFire's default legal verifier checks external legal authorities only. It verifies
+Entailgate's default legal verifier checks external legal authorities only. It verifies
 whether a cited law, rule, case, decision, official policy, or official guideline
 exists; whether its identifier, quotation, number, link, legal force, posture, and
 disposition are accurate; and whether it fairly supports the proposition asserted.
@@ -46,6 +47,22 @@ chronology, screenshot, internal document, grammar, or connecting prose. Those f
 remain part of the drafting evidence layer. Mixed legal-and-private claims must be
 split so the legal half can be verified without uploading or rereading the private
 half. Private-fact review is a separate, explicit, local-only opt-in.
+
+## Material-consequence gate
+
+Do not call something a correction merely because an opponent could point to it. A
+proposed `MUST_FIX` item must state:
+
+1. the hard defect demonstrated by the underlying authority;
+2. the concrete effect if exposed on a legal premise, remedy, jurisdiction, deadline,
+   attribution, legal force, source accuracy, or decision outcome; and
+3. the smallest repair that removes that effect without diluting the rest.
+
+`It could be challenged` is not a concrete effect. A second reasonable reading,
+ordinary forensic disagreement, omitted opposing argument, or a continuous exact
+excerpt shorter than the source sentence is not a defect by itself. If the proposed
+nitpick cannot materially hurt the submission, classify the existing wording
+`KEEP_STRONG` rather than manufacturing a caveat.
 
 ## Advocacy-preserving rules
 
@@ -82,6 +99,40 @@ half. Private-fact review is a separate, explicit, local-only opt-in.
 10. **Reverify every uplift.** A proposed stronger sentence is a new subject. Any new
     material proposition, quotation, number, legal force, actor, remedy, or citation
     must pass the integrity gate again before release.
+11. **Do not generate exits.** Do not tell the respondent that a changed allegation
+    might be a summary, that a decision-maker can depart if it gives reasons, or how a
+    defect could be repaired. Identify the missing particular or contradiction and
+    stop.
+12. **Prefer present correction for present harm.** Where authority permits, request
+    withdrawal, setting aside, correction, cessation of reliance or enforcement,
+    circulation of the correction, preservation or production, and concrete
+    prevention controls. Do not default to a new neutral reviewer, reinvestigation,
+    referral back, or explanation unless the user selected that result or law makes it
+    the only available route.
+
+## Legal-force calibration without surrender
+
+- When official guidance says `should`, do not attribute `must` to it. Use `should`,
+  then state positively that the applicable criteria should be followed fully and
+  consistently. Do not add `unless the decision-maker explains its departure`.
+- Do not call a non-binding review or tribunal decision binding precedent. Where the
+  Source Box supports it, call the decision a highly analogous, consistent, and
+  persuasive official application, and submit that the same standard and result
+  should be applied. Do not volunteer a route for departure.
+- An exact quotation may be a continuous excerpt rather than a full sentence.
+  Boundary truncation alone is not a misquotation. Internal omissions, brackets,
+  translations, and OCR corrections must be disclosed. An omission is material when
+  it changes or hides an actor, attribution, negation, condition, exception, scope,
+  force, or conclusion.
+
+## Changed or broadened grounds
+
+When a specific allegation becomes broader or less particular after the applicant's
+denial, preserve a supportable characterization that its basis changed or expanded.
+Pin down the missing actor, date, platform, words, legal basis, and document locator.
+Do not recast the change as a harmless clarification, summary, or generalization
+unless the Source Box establishes that conclusion and the Policy requires it. Do not
+write alternative routes that teach the respondent how to restore the allegation.
 
 ## Closed-fork strategy for an incomplete adjudication
 
@@ -101,13 +152,18 @@ ground without correcting a citation or factual error.
 
 ## Mandatory three-track output
 
-Every WordFire review must classify each material observation into exactly one track.
+Every legal `UPLIFT` review must classify each material observation into exactly one
+track. In citation-only `AUDIT` or `REPAIR`, use the semantic verdicts and leave
+advocacy tracks `N/A`.
 
 ### MUST_FIX
 
-Use only for a provable hard defect: nonexistent authority, wrong identifier, broken
+Use only for a provable hard defect that passes the material-consequence gate: a
+purported authority contradicted by authoritative source evidence, wrong identifier, broken
 quotation, wrong number, opposite holding, allegation reported as a finding, material
-condition removed, or another error that the source can directly demonstrate.
+condition removed, materially wrong legal force, or another directly demonstrated
+error. A failed or incomplete search remains `NOT_FOUND` or `SOURCE_UNAVAILABLE`; it
+does not prove fabrication.
 
 ### KEEP_STRONG
 
@@ -148,7 +204,13 @@ The second pass must actively test for:
 - an available ground, remedy, procedural consequence, contradiction, deadline, or
   burden that the draft omits or narrows;
 - an institutional task framed as a favour, optional step, confirmation request, or
-  offer to provide more material.
+  offer to provide more material;
+- a live error or restriction answered only with a request for another review,
+  investigation, referral, explanation, or purportedly neutral process;
+- language that suggests an innocent explanation, alternate route, departure reason,
+  or repair theory that the respondent has not supplied;
+- a specific allegation broadened into a platform-free, date-free, actor-free, or
+  otherwise less particular description after denial.
 
 The scan must preserve weapon negations (`There is no evidence identified`) and
 necessary legal distinctions. It must not strengthen a statutory `may` into `must`
@@ -200,6 +262,7 @@ Every legal semantic audit must keep these fields separate:
 - proposition is fairly supported;
 - authority advances the submission's stated direction;
 - material defect, if any;
+- concrete release impact, if any;
 - minimal repair, only if a material defect exists.
 
 After those fields, include a separate **Advocacy uplift** section. Do not mix
@@ -228,7 +291,7 @@ materially false or misleading statement.
   must be stopped.
 - “A claim is not necessarily decided by isolating each event” is accurate but
   underclaims the cumulative requirement. When supported by section 135 and the cited
-  cumulative authorities, WordFire should propose: “A cumulative claim must be
+  cumulative authorities, Entailgate should propose: “A cumulative claim must be
   assessed as a series, not by isolating each event.”
 - “My facts are not identical to J.T.” is an unnecessary concession. The proposition
   does not depend on identical facts. Delete it and state the complete-record rule.

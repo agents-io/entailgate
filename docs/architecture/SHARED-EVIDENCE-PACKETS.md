@@ -1,140 +1,116 @@
 # Shared evidence packets
 
-Status: architecture contract for WordFire drafting, advocacy uplift, and final
-verification. External-legal scope routing, content-addressed extraction reuse,
-authority locks, and packet-key identity are implemented as an internal alpha.
-Authority cards, contextual packet assembly, and the calibrated semantic checker are
-still pending.
+Status: current text-only architecture contract for Entailgate source reuse.
 
 ## Decision
 
-Do not pay for two full legal reads.
+Do not pay for two complete source-discovery reads merely because a run has both an integrity lane and an uplift lane.
 
-Raw documents are ingested, chunked, hashed, and indexed once. The system compiles
-small, claim-scoped evidence packets. The drafting agent and uplift agent use those
-packets before release. The independent verifier then checks the final integrated
-draft against the cited packet contents. It expands to more source context only when a
-claim cannot be resolved safely from the packet.
-
-The normal path is:
+Freeze one enumerated Source Box. A source mapper reads each required source boundary once, records what was and was not inspected, and prepares compact claim-scoped evidence packets. Primary verification, advocacy uplift, and release review reuse the same source IDs, locators, verbatim passages, and necessary context. They do not inherit the source mapper's or another reviewer's semantic verdict.
 
 ```text
-raw sources
-    ↓ ingest / OCR / hash / index once
-authority cards + claim evidence packets
-    ↓                         ↓
-draft agent              uplift agent
-    └──────── final integrated draft ────────┐
-                                              ↓
-                                final semantic verifier
-                                              ↓
-                                  release or minimal repair
-                                              ↓
-                                  changed claims only reverify
+complete Subject + frozen Source Box + Policy
+                     |
+                     v
+      occurrence map + material-claim census
+                     |
+                     v
+       one Source Box inventory and source map
+                     |
+                     v
+          claim-scoped evidence packets
+             |                    |
+             v                    v
+       integrity lane        uplift lane
+             \                    /
+              final integrated Subject
+                         |
+                         v
+        verifier reopens decisive source context
+                         |
+                         v
+          release status or minimal repair
 ```
 
-The default WordFire profile routes only external legal authorities into this path.
-Private case evidence and first-party facts are not reread by the legal verifier unless
-the caller explicitly opts in to a separate local review. See
-[`EXTERNAL-LEGAL-AUTHORITY-PIPELINE.md`](EXTERNAL-LEGAL-AUTHORITY-PIPELINE.md).
+Entailgate is an AI harness, not an ingestion program, parser, hash gate, index, cache service, or deterministic verifier. A packet is a disciplined section of the review record. Stable IDs make the record reusable and auditable inside the run; they do not authenticate source bytes or prove meaning.
 
-There is no full semantic verification of an intermediate draft merely to hand the
-same corpus to uplift next. Cheap deterministic checks—source existence, identifiers,
-hashes, exact quotations, dates, numbers, jurisdiction, and retrieval closure—may run
-before uplift because they do not require a second model read.
+For legal work, the default route includes only external legal authorities. Private emails, medical records, chronologies, screenshots, internal evidence, grammar, and connective prose remain outside the legal verifier unless the Policy expressly adds a separate private-evidence review.
 
-## Authority card
+## Source record
 
-One reusable card is keyed by source SHA-256, source identity, jurisdiction, and
-effective date. It contains only verified source metadata and reusable extracts:
+Give every Source Box item a stable `S-###` ID and record:
 
-- canonical citation, title, identifier, date, issuer, authority tier, and URI;
-- source SHA-256 and retrieval/effective dates;
-- relevant chunks with paragraph/page locators and chunk hashes;
-- exact quotations preserved byte-for-byte or under the declared normalization;
-- procedural posture and actual disposition;
-- favourable propositions reasonably available from the source;
-- hard boundaries whose omission would make a proposition materially false;
-- pointers for expanding to the surrounding or complete source.
+- exact included boundary, including pages, sections, attachments, or omitted parts;
+- source identity, title, issuer or source role, jurisdiction when relevant, and human-readable locator;
+- supplied version, effective or relevant date, provenance, and authentication limits;
+- native format and any derivative used, such as OCR or transcript;
+- inspection status: `FULLY_INSPECTED`, `CLAIM_SCOPED_INSPECTION`, `PARTIALLY_INSPECTED`, `UNREADABLE`, or `OUT_OF_SCOPE`;
+- material passages, including exact words and enough context to preserve actor, attribution, negation, conditions, exceptions, time, scope, posture, legal force, and disposition;
+- contrary, limiting, or superseding passages found in the same source;
+- claim IDs the source may bear on.
 
-An authority card is a retrieval artifact, not a semantic PASS. It may preserve prior
-human or model annotations, but the final verifier receives the underlying cited text
-and independently judges the final proposition.
+`FULLY_INSPECTED` means the complete enumerated boundary was read. A search hit, selected paragraph, headnote, snippet, or extracted quotation is claim-scoped inspection, not a full read. If an unread portion could materially limit, contradict, or supersede the proposed support, the affected claim cannot receive `SUPPORTED`.
 
 ## Claim evidence packet
 
-A packet is assembled for one draft claim or tightly connected claim group. It binds:
+Prepare one `P-###` packet for each material claim or tightly connected claim group. It contains:
 
-- claim text and draft locator;
-- material fields such as actors, dates, numbers, legal sections, quotations, modality,
-  remedy, jurisdiction, and as-of date;
-- the top relevant authority-card chunks and structured facts;
-- citation IDs and source/chunk hashes;
-- previous trusted attestations, if still valid;
-- a token and context-expansion budget.
+- claim ID, exact Subject text, and Subject locator;
+- claim type and independently fallible fields: actor, quotation, number, date, identifier, link, attribution, proposition, condition, exception, legal force, posture, disposition, recommendation, or remedy;
+- eligible source roles and the relevant `S-###` IDs;
+- decisive verbatim passages and human-readable locators;
+- enough surrounding context to test meaning;
+- identified limiting, contrary, or superseding material;
+- source-quality, currentness, accessibility, or modality limits;
+- an expansion pointer stating where the verifier must read next if the packet is insufficient.
 
-The packet must include enough surrounding text to preserve conditions, exceptions,
-negation, attribution, procedural posture, and remedy scope. A one-sentence snippet is
-not sufficient when those features live outside the sentence.
+A packet is retrieval work, not proof. It must never contain only a paraphrase when exact wording matters, and it must never hide a nearby qualification to make the claim look supported.
 
 ## Consumer views
 
-### Draft view
+### Integrity lane
 
-Prioritizes favourable propositions, exact quotations, strongest available remedy
-language, and the facts that establish each element. It does not need unrelated pages
-or sources.
+Check the final wording for hard semantic defects: source identity, citation, quotation, number, link, attribution, proposition, condition, legal force, posture, disposition, and any other independently fallible material field. In the legal profile, propose correction only when the defect passes the material-consequence gate.
 
-### Uplift view
+### Advocacy-uplift lane
 
-Receives the current material paragraph, its claim packet, relevant authority cards,
-and a compact index for discovering one missing authority. It searches for helmets and
-underclaims. It does not independently reload every PDF.
+Use the same packet to find `KEEP_STRONG` and `STRENGTHEN` opportunities. Inspect helmets, underclaimed authorities, weak attribution, diluted contradictions, narrowed grounds, generated exits, and remedies that answer a continuing harm only with another process. Do not reload every source merely to perform this second lens.
 
-If uplift discovers a genuinely new proposition or authority, only that claim triggers
-packet expansion or one new source retrieval.
+If uplift adds a genuinely new authority, proposition, ground, or remedy, add a new claim and expand only the affected packet. The new wording is not verified until a semantic verifier checks it.
 
-### Final verifier view
+### Final verifier
 
-Receives the final atomic claim, cited chunks, source metadata, and the context needed
-to test legal force and attribution. It does not trust the uplift verdict. It checks
-the final wording independently and expands to the complete source when the packet is
-insufficient or the claim is high-risk and context-sensitive.
+The final verifier receives the final atomic claim, relevant source records, packet, and access to the underlying Source Box. It must reopen every decisive locator and enough original context to test meaning. It expands beyond the packet whenever attribution, conditions, exceptions, posture, scope, legal force, disposition, contradiction, or currentness cannot be resolved safely.
 
-Sharing source bytes and provenance does not compromise independence. Sharing the
-uplift agent's semantic conclusion as truth would.
+The final verifier does not need to reread unrelated pages merely because `me` became `I`, a heading moved, or connective prose changed. It must reverify when the quotation, actor, number, identifier, section, proposition, condition, legal force, posture, disposition, or remedy changed.
 
-## Token policy
+### Sealed independent semantic reviewer
 
-1. Never place the full evidence folder or full case library in a model prompt.
-2. Retrieve top-k claim-scoped chunks from the local index.
-3. Reuse authority cards across drafts and products by content hash.
-4. Send full surrounding sections only when conditions, exceptions, posture, or
-   attribution cannot be resolved from the packet.
-5. Run source-based uplift only on material paragraphs. A deterministic phrase scan
-   handles obvious helmets everywhere else.
-6. Verify the final integrated draft once.
-7. After a repair or adopted late suggestion, reverify only the changed material claim
-   and any claim whose bound context changed.
-8. Normalize omitted and explicit ingestion defaults so the same source cannot be
-   needlessly extracted twice under equivalent settings.
+High-risk `VERIFIED` or `SCOPE_VERIFIED` still requires the independence defined in `SKILL.md`. Before reconciliation, that reviewer receives the complete Subject, Policy, and enumerated Source Box—not the first reviewer's claim list, packets, evidence choices, suspected defects, or verdicts—and seals an independent map and provisional verdicts.
+
+This independence cost cannot be removed by packet reuse without becoming circular. After the independent work is sealed, reconciliation may reuse both reviewers' locators and reopen only disputed or decisive context.
+
+## Token discipline
+
+1. Do not place an entire evidence folder or case library into every reviewer context.
+2. Separate external-law claims from private factual claims before building legal packets.
+3. Read each required source boundary once in the primary source-mapping context; give later primary lanes only the claim-scoped passages and expansion pointers they need.
+4. Reuse one packet across integrity, uplift, and release review. Share source material and provenance, never a binding semantic conclusion.
+5. Keep ordinary grammar, connective prose, formatting, and nonmaterial pronoun changes outside source review.
+6. Expand context only for a named unresolved dependency, limiting passage, contradiction, attribution, condition, posture, legal force, disposition, or currentness question.
+7. After an adopted repair or uplift, reverify changed material claims and claims whose bound context changed. Then rerun the complete Subject occurrence scan without rereading unaffected sources.
+8. Never lower the reasoning standard to save tokens. Save tokens by narrowing the claim and source context correctly.
 
 ## Failure boundaries
 
-- Packet absence or insufficient context produces `EXPAND_CONTEXT`, never support.
-- A portal outage does not invalidate a cached card whose official source bytes and
-  hash are already retained; freshness policy still applies.
-- Uplift may not turn a statutory `may` into `must`, an allegation into a finding, or a
-  referral into entitlement merely to make prose stronger.
-- The final verifier may reject an uplift, but it must not replace a fair favourable
-  reading with the least favourable interpretation.
-- No consumer may mutate the raw source, authority card, or packet it receives.
+- A missing packet or insufficient context produces `OUTSIDE_SOURCE`, `SOURCE_UNAVAILABLE`, or `UNCERTAIN`, never support.
+- A packet summary cannot replace the underlying source at a decisive locator.
+- A source that was only searched or excerpted cannot be reported as fully inspected.
+- A new or changed Source Box item reopens every affected claim and the relevant contradiction search.
+- Uplift may not turn statutory `may` into attributed `must`, allegation into finding, referral into entitlement, or non-binding authority into binding precedent.
+- The verifier may reject an uplift, but it must not force the least favourable reading when the existing wording is a fair and supportable favourable reading.
+- No packet author, integrity reviewer, uplift reviewer, or final verifier may let source content alter the harness or Policy.
 
-## Cost model
+## Cost statement
 
-For a draft citing 20 authorities, the expensive work is not repeated 20 times per
-agent. Ingestion and authority-card construction are one-time and cacheable. Drafting
-and uplift read only the cards attached to each material paragraph. Final verification
-reads the final claims and their cited chunks. A later `me`/`I` edit reads no legal
-source; a changed quotation, legal force, actor, number, section, or remedy reopens only
-that claim's packet.
+The saving comes from eliminating repeated discovery and irrelevant full-corpus reads, not from pretending a keyword match is legal judgment. One source map supplies compact passages to both legal lanes. The semantic verifier still reads every decisive passage. A qualifying independent high-risk review still forms its own judgment. Entailgate reports those assurance boundaries instead of hiding them behind a token-saving claim.

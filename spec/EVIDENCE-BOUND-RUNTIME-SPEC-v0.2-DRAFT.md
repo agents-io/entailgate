@@ -1,5 +1,7 @@
 # Entailgate Evidence-Bound Runtime Specification v0.2 — Draft
 
+> **Historical experiment.** This deterministic-runtime draft is frozen and superseded by the text-only AI harness in [`../SKILL.md`](../SKILL.md). It is retained for provenance and is not the current product specification.
+
 Status: experimental; not the current legal filing gate
 Date: 2026-08-22
 Normative terms: MUST, MUST NOT, SHOULD, MAY

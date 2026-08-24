@@ -1,127 +1,115 @@
-# External legal authority pipeline
+# External legal authority review protocol
 
-Status: internal alpha implemented for scope routing, extraction caching, authority
-locks, and packet-key identity. Authority-card retrieval and the calibrated semantic
-checker remain pending.
+Status: current text-only protocol for Entailgate's default legal scope.
 
 ## Product boundary
 
-The default WordFire verification profile is `external-legal-only`. It checks claims
-about external law and authority:
+The default legal profile verifies claims about external law and public authority:
 
-- statutes, regulations, and procedural rules;
+- statutes, regulations, procedural rules, and official guidance;
 - court, tribunal, review, and administrative decisions;
-- official policy and official guidance;
-- secondary legal commentary when the draft actually relies on it.
+- legal identifiers, citations, links, quotations, pinpoints, holdings, posture, disposition, force, effective date, and treatment;
+- secondary legal commentary only when the Subject actually relies on it and the Policy permits that source role.
 
-It does not re-check the applicant's email, medical record, chronology, screenshot, internal
-evidence, grammar, or ordinary connecting prose. Those materials belong to the
-drafting evidence layer. A caller can request local private-fact review only by
-allowlisting both the claim and every private source. That opt-in produces a scope
-review, never an automatic legal-support verdict.
+It does not spend a second legal-verifier read on the applicant's emails, medical records, chronology, screenshots, internal evidence, grammar, or connective prose. A separate Policy may opt into private-evidence review, but that is a different scope and must remain visible in the report.
 
-## Pipeline
+This protocol instructs an AI. It is not a scope-routing script, extraction service, cache, hash lock, schema, or CLI. Semantic claim extraction, source-role judgment, quotation review, and legal application are all model tasks governed by the harness.
+
+## Review flow
 
 ```text
-frozen draft
-  -> deterministic claim candidates
-  -> external-legal scope router
-  -> resolve only named/cited public authorities
-  -> SHA-256 + bounded ingest/OCR cache (once per source bytes + ingest policy)
-  -> immutable authority lock (source bytes + declared legal identity)
-  -> claim packet key (claim + locks + cited chunks + context + checker)
-  -> strongest available final semantic checker
-  -> MUST_FIX / KEEP_STRONG / STRENGTHEN
-  -> changed claims only reverify
+complete Subject
+  -> occurrence map
+  -> material legal-claim census
+  -> split mixed legal/private claims
+  -> enumerate or curate permitted authorities
+  -> freeze one legal Source Box
+  -> one source map + claim-scoped evidence packets
+  -> integrity lane + optional advocacy-uplift lane
+  -> final semantic verification at decisive source locators
+  -> MUST_FIX / KEEP_STRONG / STRENGTHEN and release status
 ```
 
-The router is intentionally conservative. A claim that mixes an external legal
-proposition with a private factual proposition is `SPLIT_MIXED_CLAIM`. An unclassified
-semantic proposition is `REVIEW_SCOPE`. Neither can disappear because the tool did not
-understand it.
+The legal source map and packets are defined in [`SHARED-EVIDENCE-PACKETS.md`](SHARED-EVIDENCE-PACKETS.md). The normative advocacy standard is [`../policy/BC-LEGAL-ADVOCACY-VERIFICATION.md`](../policy/BC-LEGAL-ADVOCACY-VERIFICATION.md).
 
-## Where tokens are saved
+## Scope census
 
-The final legal checker is not weakened. Savings happen before it runs:
+Classify every Subject occurrence before verification:
 
-1. Ordinary prose and private facts do not enter the legal-verification prompt.
-2. Source bytes are hashed and technically extracted once for each normalized ingest
-   policy. Identical bytes at another local path reuse the same entry.
-3. Changing title, issuer, legal class, jurisdiction, effective interval, or canonical
-   identity changes the authority lock without repeating PDF/OCR extraction.
-4. Claim packets carry cited chunks and required context, not an evidence folder.
-5. Unchanged claim/packet/checker bindings may reuse a prior attestation. A checker
-   version change reruns semantics without repeating extraction.
+- `IN_SCOPE_EXTERNAL_LEGAL`: a material claim about an external legal authority;
+- `MIXED_SPLIT_REQUIRED`: legal and private propositions can fail separately and must become separate claim rows;
+- `MATERIAL_OUT_OF_SCOPE`: a material private, medical, factual, or other claim excluded by the Policy;
+- `NONCLAIM_EXCLUDED`: greeting, connective prose, formatting, or another occurrence with no material source-dependent assertion.
 
-The extraction cache contains no `PASS`, `SUPPORTED`, semantic score, or uplift
-conclusion. Drafting and uplift may share source bytes and packets. The final verifier
-must independently decide whether the final wording is supported.
+Do not use string shape as the decision rule. An uncited sentence can contain a legal proposition. A case-looking filename can contain private evidence. A sentence containing both law and fact cannot disappear merely because the legal half was extracted.
 
-## Identity layers
+A default external-legal review may return `SCOPE_VERIFIED: external legal authorities`; it cannot label the complete mixed document `VERIFIED` when material private claims remain outside scope.
 
-| Layer | Key includes | Invalidated by | Reused for |
-|---|---|---|---|
-| Extraction | source SHA-256, media/OCR/limits, ingest contract | byte or ingest-policy change | parsing and OCR only |
-| Authority lock | extraction entry plus canonical identity and legal metadata | identity, jurisdiction, tier, date, or source change | provenance and routing |
-| Claim packet | claim binding, authority locks, cited chunks, context closure, as-of, checker identity | any semantic dependency change | one final claim check |
-| Attestation | final claim/evidence/checker binding | changed claim, evidence, scope, currency, or checker | unchanged-claim semantic reuse |
+## Source curation
 
-The whole-document hash remains an audit seal. It is not a reason to reread every
-authority after a harmless prose edit.
+When all required authorities are already supplied, enumerate them in the Source Box and freeze it.
 
-## Current CLI slice
+When the Policy authorizes discovery, use a separate source-curation step:
 
-Select only external legal candidates from a draft:
+1. identify the exact missing authority or proposition;
+2. search only the permitted jurisdiction, issuer, database, date range, and source classes;
+3. open the underlying official or otherwise eligible source rather than relying on a search result, snippet, citation card, headnote, or another AI's summary;
+4. record the search scope, provenance, relevant date, exact included boundary, and any access or authentication limit;
+5. add each accepted source to the enumerated Source Box;
+6. freeze the completed box before semantic verification.
 
-```text
-entailgate legal scope --draft /absolute/path/to/draft.md
-```
+A failed search supports `NOT_FOUND` only within its recorded scope. It does not prove universal nonexistence. A portal outage or unreadable document is `SOURCE_UNAVAILABLE`. Model memory may suggest where to search but never counts as evidence.
 
-The output omits prose-only candidates and every candidate's original text. It reports
-only hashes, locators, legal references, and routing actions, so a mixed sentence cannot
-print a private fact into the authority-resolution handoff. `scopedCoverageComplete`
-remains `false`.
+## Legal claim packet
 
-Cache one downloaded external authority and create its immutable lock:
+For each legal claim, keep independently fallible fields separate:
 
-```text
-entailgate legal cache-source \
-  --source /absolute/path/to/2024-bcsc-994.pdf \
-  --cache-dir /absolute/path/to/private-authority-cache \
-  --canonical-id BCSC-2024-994 \
-  --title "Fixture v Example" \
-  --issuer "Supreme Court of British Columbia" \
-  --class adjudicative_decision \
-  --tier primary \
-  --jurisdiction BC \
-  --uri https://official.example/authority
-```
+- source identity and existence;
+- neutral or report citation, section, case number, link, and pinpoint;
+- exact quotation, ellipsis, bracket, translation, or OCR correction;
+- actor, attribution, legal force, condition, exception, negation, and scope;
+- procedural posture, actual holding, finding, and disposition;
+- the proposition or analogy asserted in the Subject;
+- whether that proposition advances the stated direction under a reasonable favourable reading;
+- currentness or later treatment when required;
+- remedy or proposed legal action and the decision-maker's authority to grant it.
 
-The declared identity is hash-bound but not magically proven true. Resolution against
-an official origin, authority-card construction, contextual packet expansion, and the
-strong semantic checker are the next integration layer.
+An exact quotation does not prove the proposition around it. A real case does not prove the rule attributed to it. A favourable analogy does not need to be the only possible reading; it must be a fair reading a reasonable decision-maker could adopt under the Policy.
+
+## Integrity and uplift share sources, not conclusions
+
+The integrity lane looks only for demonstrable hard defects and records the concrete release impact before proposing correction. The uplift lane uses the same passages and locators to preserve fair strong readings, remove self-imposed limits, identify unused authority, prevent generated exits, and seek direct corrective relief where legally available.
+
+Neither lane rereads the complete legal corpus merely because the other lane exists. Both may expand an affected packet when context is insufficient. The final verifier reopens every decisive locator and necessary context and assigns its own verdict.
+
+A high-risk sealed independent reviewer still builds its own occurrence map, claim census, evidence choices, and provisional verdicts before reconciliation. Source reuse cannot be used to fake independence.
+
+## Change sensitivity
+
+Do not reopen legal sources for grammar, formatting, connective prose, or a nonmaterial pronoun change such as `me` to `I`.
+
+Reverify an affected claim when any of these changes:
+
+- quoted words or quotation boundaries;
+- actor, attribution, date, number, identifier, section, link, or pinpoint;
+- proposition, inference, condition, exception, negation, or scope;
+- legal force, posture, holding, disposition, currentness, or treatment;
+- ground, burden, deadline, jurisdiction, remedy, or proposed legal action;
+- source identity, version, included boundary, provenance, readability, or Source Box membership.
+
+After repairs or adopted uplift, rerun the complete Subject occurrence scan. This catches a new material claim or self-limiting sentence without forcing unrelated authorities to be read again.
 
 ## Non-negotiable failures
 
-- A private source is outside the default profile even if its filename looks like a
-  reported case.
-- Unknown source class or mixed claims require review or splitting.
-- Corrupt or hash-mismatched cache entries fail closed.
-- Unresolved extraction is never cached.
-- Insufficient surrounding context expands or stops; it never supports.
-- A cached annotation or uplift verdict never authorizes final support.
-- A legal-scope result never claims that the whole draft is true.
+- Unknown or mixed scope requires classification or splitting; it cannot be silently excluded.
+- Insufficient source context expands the packet or produces a blocking verdict; it never becomes support.
+- A search result, snippet, headnote, citation card, packet summary, or prior model verdict cannot replace the underlying source.
+- A quotation can be an exact continuous excerpt, but an undisclosed internal omission or a boundary that hides material meaning is a defect.
+- `Should` cannot be attributed as `must`; non-binding authority cannot be attributed as binding precedent; allegation cannot become finding; referral cannot become entitlement.
+- Ordinary forensic disagreement and another reasonable interpretation are not hallucinations.
+- The verifier must not generate the respondent's escape route or convert a request for present correction into another process without authority or user choice.
+- A legal-scope result never claims that the complete Subject's private facts were verified.
 
-## Cache trust boundary
+## Historical runtime
 
-Cache files are owner-only, closed-shape, self-hashed consistency artifacts. Every hit
-re-hashes the bounded current source, rejects symbolic/non-regular inputs, validates
-page provenance, and for plain UTF-8 text directly binds extracted text back to source
-bytes. This prevents accidental drift and ordinary cache poisoning.
-
-It is not authenticated against an attacker running as the same OS user. In
-particular, a same-user attacker who can rewrite a PDF cache entry and recompute every
-public hash cannot be detected without a secret-backed signature or fresh extraction.
-High-risk PDF quotation release therefore still requires page-level visual review or a
-fresh sandboxed extraction plus a trusted attestation. The cache saves parsing work; it
-does not upgrade extraction or legal accuracy above `UNCHECKED`.
+Any executable scope router, extraction cache, hash lock, schema, or CLI remaining in the repository is a frozen historical experiment. It is not this protocol, is not required to use Entailgate, and must not be presented as semantic verification.

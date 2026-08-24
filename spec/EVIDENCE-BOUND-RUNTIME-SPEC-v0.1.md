@@ -1,5 +1,7 @@
 # Entailgate Evidence-Bound Runtime Specification v0.1
 
+> **Historical experiment.** This deterministic-runtime design is frozen and superseded by the text-only AI harness in [`../SKILL.md`](../SKILL.md). It is retained for provenance and is not the current product specification.
+
 Implementation amendment: runtime 0.1.1 strengthens evidence, claim, domain, and action bindings. A 0.1.0 semantic-attestation hash is not accepted as a 0.1.1 attestation.
 
 Status: implementable MVP
