@@ -167,6 +167,8 @@ This gate is **REQUIRED** whenever the Subject is directed to a person or instit
 
 The run card must identify the intended reader or decision-maker, every core issue ID, and the exact non-displaceable answer, action, or remedy required for each issue. Read the complete Subject once from the recipient's perspective. Find wording that would let the recipient give a facially responsive side answer while leaving the core issue or required outcome unresolved.
 
+When the Subject evaluates a prior response, also build an `Issue A → Response B` map. Record the issue actually raised and the different issue actually answered. A change in actor, object, event, category, legal test, time period, causation question, or requested outcome is a possible substitution even when the answer to B is accurate. An answer to B does not close A.
+
 For every possible diversion:
 
 - quote the exact trigger text and its Subject locator;
@@ -184,6 +186,7 @@ Inspect at least these diversion classes when applicable:
 - competence, education, comprehension, or tone comparisons that are easier to answer than the substance;
 - requests about internal routing, staffing, or personnel that displace the required result;
 - an ambiguous actor, object, event, category, or requested outcome;
+- a response that substitutes a different actor, object, event, category, legal test, time period, causation question, or remedy and then treats the original issue as answered;
 - a false dichotomy or merged categories that let one answer erase another;
 - an analogy or adjective that becomes easier to debate than the documented contradiction;
 - a generic request or deadline that is not bound to the numbered issues and required deliverable;

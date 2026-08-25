@@ -124,8 +124,10 @@ outcome unresolved.
 Use `DIVERSION_MUST_FIX` only when the trigger creates a concrete release impact.
 Common triggers include competence or child-comprehension comparisons, requests for a
 different internal reviewer instead of a result, ambiguous actors or event categories,
-merged coworker conduct and employer decisions, a factual-comparison response to a
-legal-principle question, and a generic deadline detached from the numbered issues.
+an answer that substitutes a different actor, event, test, time period, causation
+question, or remedy, merged coworker conduct and employer decisions, a
+factual-comparison response to a legal-principle question, and a generic deadline
+detached from the numbered issues.
 Delete only the trigger or make the smallest clarification. Preserve the supported
 allegation, legal force, and requested remedy.
 

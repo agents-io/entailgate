@@ -33,6 +33,7 @@ Subject to verify + Source Box + Policy
 - a confident `PASS` when a source is missing or unreadable;
 - a second reviewer checking only the first reviewer’s conclusions;
 - wording that invites a facially responsive side answer while leaving the core issue unresolved;
+- a response to a substituted actor, event, test, time period, or remedy being treated as an answer to the issue actually raised;
 - repeated full-source reading while still requiring original-source checks at decisive passages.
 
 ## The contract

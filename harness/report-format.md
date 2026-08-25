@@ -112,11 +112,11 @@ Also report omitted claims, denominator changes, prompt-injection concerns, sour
 
 This section is mandatory whenever the Subject asks an intended recipient for an answer, decision, reason, correction, action, or remedy. If it is `NOT_APPLICABLE`, state the exact reason.
 
-| ID | Core issue and required outcome | Exact trigger text and locator | Side answer invited (internal only) | What would remain unanswered | Concrete release impact | Track | Smallest repair |
+| ID | Core issue A and required outcome | Exact trigger text and locator | Substituted issue B or side answer invited (internal only) | What would remain unanswered | Concrete release impact | Track | Smallest repair |
 |---|---|---|---|---|---|---|---|
 | D-001 | ... | ... | ... | ... | ... | DIVERSION_MUST_FIX / KEEP_STRONG / STRENGTHEN | ... |
 
-The `Side answer invited` column is an internal diagnostic. Do not copy the imagined response into proposed outgoing text. Use `DIVERSION_MUST_FIX` only when the quoted trigger creates a concrete exit with material release impact. Keep the smallest repair tied to the same core issue and required outcome. Report `PASSED` only after the complete Subject has been scanned, every core issue has a row or an explicit no-trigger finding, and zero `DIVERSION_MUST_FIX` items remain.
+When a prior response exists, the fourth column records the different issue B that was actually answered. In a prospective review, it records the shortest plausible side answer invited by the draft. The prospective answer is an internal diagnostic; do not copy it into proposed outgoing text. Use `DIVERSION_MUST_FIX` only when the quoted trigger creates a concrete exit with material release impact. Keep the smallest repair tied to the same core issue and required outcome. Report `PASSED` only after the complete Subject has been scanned, every core issue has a row or an explicit no-trigger finding, and zero `DIVERSION_MUST_FIX` items remain.
 
 ## Uplift
 

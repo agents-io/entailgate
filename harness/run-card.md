@@ -28,6 +28,8 @@ Complete this card before a review. Write `NOT SUPPLIED` instead of guessing.
 - No-Diversion Gate: `REQUIRED | NOT_APPLICABLE`
 - Applicability reason when `NOT_APPLICABLE`:
 - Intended reader or decision-maker:
+- Prior response being evaluated: `YES | NO`
+- If yes, exact response boundary and locator:
 - Core issue IDs:
 - Non-displaceable answers, actions, or remedies:
 - Material classes in scope:

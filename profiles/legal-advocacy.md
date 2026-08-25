@@ -89,6 +89,7 @@ Inspect these legal-advocacy traps in particular:
 - attacks or comparisons about intelligence, English ability, education, child comprehension, or what “anyone can see”;
 - a request to assign another manager, reviewer, or internal workflow instead of delivering the correction or remedy;
 - an unclear actor, target, platform, event, category, or document;
+- an answer to a substituted actor, event, legal test, time period, causation question, or remedy presented as an answer to the issue actually raised;
 - merged categories that let an employer-decision exclusion erase earlier coworker conduct;
 - a factual-comparison answer presented as though it answered a legal-principle question;
 - a generic reply request or deadline that is not tied to the numbered issues and required point-by-point answer;
