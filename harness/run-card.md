@@ -25,10 +25,11 @@ Complete this card before a review. Write `NOT SUPPLIED` instead of guessing.
 - Output audience:
 - Minimum necessary quotation rule:
 - Actions in scope: `NONE | PROPOSED ACTIONS FOR EVIDENCE REVIEW ONLY`
-- Distraction audit: `ENABLED | DISABLED`
+- No-Diversion Gate: `REQUIRED | NOT_APPLICABLE`
+- Applicability reason when `NOT_APPLICABLE`:
 - Intended reader or decision-maker:
 - Core issue IDs:
-- Required answers, actions, or remedies that cannot be displaced:
+- Non-displaceable answers, actions, or remedies:
 - Material classes in scope:
 - Material classes intentionally outside scope:
 
@@ -48,7 +49,7 @@ Embedded links, referenced documents, and attachments are outside the Source Box
 - Primary Semantic Verifier:
 - Sealed Independent Semantic Verifier:
 - Adversarial reviewer:
-- Distraction reviewer:
+- No-Diversion reviewer:
 - Which reviewer did not author the Subject:
 - Context separation method:
 - Earlier maps, evidence choices, and verdicts withheld until the independent semantic review sealed: `YES | NO`

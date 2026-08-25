@@ -78,11 +78,11 @@ When authorized, independently inspect the complete Subject for express waivers,
 
 An unapproved self-limitation that conflicts with the Policy is `MUST_FIX`. Delete an unsupported waiver or narrowing sentence. Any affirmative replacement that adds a legal proposition, ground, or remedy is a new claim and must be independently verified before adoption. Respect an express, reviewed Policy instruction that deliberately narrows scope. Never infer a waiver from silence.
 
-## Distraction audit (advocacy scope)
+## No-Diversion Gate (advocacy scope)
 
-Run the generic Distraction Audit only in `UPLIFT` mode or when the Policy expressly authorizes recipient-response review. It is separate from source verification and must pass the same release-impact discipline as every other advocacy observation.
+Run the generic No-Diversion Gate for every outward legal or formal Subject in `AUDIT`, `REPAIR`, and `UPLIFT` mode. It is mandatory whenever the draft asks an institution or person for an answer, decision, reason, correction, action, or remedy. A citation-only review may report `SCOPE_VERIFIED: external legal authorities`, but the complete draft is not release-ready until this gate passes.
 
-For each pleaded issue, record the exact answer, correction, or remedy required. Then inspect the complete Subject for wording that gives the institution an easier side issue to answer while leaving that required outcome untouched. A possible criticism is not enough. Use `DISTRACTION_MUST_FIX` only when the exact trigger creates a concrete procedural, evidentiary, remedial, or decision-outcome risk.
+For each pleaded issue, record the exact non-displaceable answer, correction, or remedy required. Then inspect the complete Subject for wording that gives the institution an easier side issue to answer while leaving that required outcome untouched. A possible criticism is not enough. Use `DIVERSION_MUST_FIX` only when the exact trigger creates a concrete procedural, evidentiary, remedial, or decision-outcome risk.
 
 Inspect these legal-advocacy traps in particular:
 

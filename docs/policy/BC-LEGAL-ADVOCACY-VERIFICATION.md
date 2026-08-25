@@ -110,14 +110,18 @@ nitpick cannot materially hurt the submission, classify the existing wording
     referral back, or explanation unless the user selected that result or law makes it
     the only available route.
 
-## Distraction audit
+## No-Diversion Gate
 
-Run this policy-only census only when the Policy expressly enables advocacy uplift or
-recipient-response review. For each numbered issue, record the exact answer,
-correction, or remedy required. Then identify exact draft wording that would let the
-institution answer a side issue while leaving that required outcome unresolved.
+Run this policy-only census for every outward legal or formal Subject that asks a
+person or institution for an answer, decision, reason, correction, action, or remedy.
+It is mandatory in `AUDIT`, `REPAIR`, and `UPLIFT` mode. A citation-only review may
+report a scope-limited authority result, but it cannot mark the complete draft
+release-ready until this gate passes. For each numbered issue, record the exact
+non-displaceable answer, correction, or remedy required. Then identify exact draft
+wording that would let the institution answer a side issue while leaving that required
+outcome unresolved.
 
-Use `DISTRACTION_MUST_FIX` only when the trigger creates a concrete release impact.
+Use `DIVERSION_MUST_FIX` only when the trigger creates a concrete release impact.
 Common triggers include competence or child-comprehension comparisons, requests for a
 different internal reviewer instead of a result, ambiguous actors or event categories,
 merged coworker conduct and employer decisions, a factual-comparison response to a

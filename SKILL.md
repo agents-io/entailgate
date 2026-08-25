@@ -161,24 +161,25 @@ Give this reviewer the complete Subject, final claim ledger, Source Box inventor
 
 Change a verdict only for a material reason grounded in the Source Box. The adversarial role is not rewarded for inventing doubts or forcing the least favourable interpretation.
 
-### 7. Distraction Audit
+### 7. No-Diversion Gate
 
-Run this layer only when the Policy expressly enables recipient-response or distraction review. It is a profile-policy census, not a source-verification verdict.
+This gate is **REQUIRED** whenever the Subject is directed to a person or institution and seeks an answer, decision, reason, correction, action, or remedy. The Policy cannot disable it for a release-ready result. Mark it `NOT_APPLICABLE` only when the Subject has no intended recipient and no requested outcome, and record the reason. A citation-only run may return a truthful scope-limited authority verdict, but it must not describe the complete Subject as release-ready until this gate passes.
 
-The run card must identify the intended reader or decision-maker, the core issue IDs, and the exact answer, action, or remedy required for each issue. Read the complete Subject once and find wording that would let the reader give a facially responsive side answer while leaving the core issue unresolved.
+The run card must identify the intended reader or decision-maker, every core issue ID, and the exact non-displaceable answer, action, or remedy required for each issue. Read the complete Subject once from the recipient's perspective. Find wording that would let the recipient give a facially responsive side answer while leaving the core issue or required outcome unresolved.
 
-For every possible distraction:
+For every possible diversion:
 
 - quote the exact trigger text and its Subject locator;
-- state the core issue and required outcome that could be displaced;
+- state the core issue and non-displaceable outcome;
 - record internally the shortest plausible non-answer invited by the trigger, but never insert the respondent's case into proposed outgoing text;
+- state exactly what would remain unanswered;
 - identify the concrete release impact;
-- classify it `DISTRACTION_MUST_FIX`, `KEEP_STRONG`, or `STRENGTHEN`;
+- classify it `DIVERSION_MUST_FIX`, `KEEP_STRONG`, or `STRENGTHEN`;
 - propose only the smallest repair.
 
-Use `DISTRACTION_MUST_FIX` only when the exact wording creates a concrete exit with material release impact. `It could be criticized` or `the reader might disagree` is insufficient. Use `KEEP_STRONG` when the reader must still confront the core issue even if it disagrees.
+Use `DIVERSION_MUST_FIX` only when the exact wording creates a concrete exit with material release impact. `It could be criticized` or `the reader might disagree` is insufficient. Use `KEEP_STRONG` when the recipient must still confront the core issue even if it disagrees. The gate passes only when every core issue is mapped, the complete Subject has been scanned, and zero `DIVERSION_MUST_FIX` items remain.
 
-Inspect at least these trigger classes when applicable:
+Inspect at least these diversion classes when applicable:
 
 - competence, education, comprehension, or tone comparisons that are easier to answer than the substance;
 - requests about internal routing, staffing, or personnel that displace the required result;
@@ -205,7 +206,7 @@ Ledger coverage is 100% only when:
 - every quotation has a verbatim passage and locator;
 - every verdict has a source-grounded reason;
 - the adversarial review has completed;
-- every Policy-authorized distraction item has a terminal track and the distraction census is closed;
+- the No-Diversion Gate is `PASSED` or validly `NOT_APPLICABLE`, every diversion item has a terminal track, and the diversion census is closed;
 - no row remains pending, skipped, assumed, or inherited from another reviewer.
 
 Classify exclusions precisely:
@@ -219,9 +220,9 @@ When a domain profile defines policy-only review items, run that profile census 
 
 Assign document status in this precedence order:
 
-1. **BLOCKED:** in-scope Subject, claim, source, or applicable profile coverage is incomplete; the in-scope denominator is `OPEN`; or any in-scope claim is `NOT_FOUND`, `SOURCE_UNAVAILABLE`, `OUTSIDE_SOURCE`, or `UNCERTAIN`.
-2. **NEEDS_REVISION:** the in-scope denominator is `CLOSED` and ledger coverage is 100%, but at least one in-scope claim is `PARTIAL` or `CONTRADICTED`, or an applicable profile has a `MUST_FIX` or `DISTRACTION_MUST_FIX` item.
-3. **SCOPE_VERIFIED:** every in-scope claim is `SUPPORTED`, every applicable profile census is closed with zero `MUST_FIX` or `DISTRACTION_MUST_FIX` items, the assurance requirement is satisfied, and one or more material occurrences remain `MATERIAL_OUT_OF_SCOPE`. Name and count every excluded material class.
+1. **BLOCKED:** in-scope Subject, claim, source, or applicable profile coverage is incomplete; a required No-Diversion Gate was not completed; the in-scope denominator is `OPEN`; or any in-scope claim is `NOT_FOUND`, `SOURCE_UNAVAILABLE`, `OUTSIDE_SOURCE`, or `UNCERTAIN`.
+2. **NEEDS_REVISION:** the in-scope denominator is `CLOSED` and ledger coverage is 100%, but at least one in-scope claim is `PARTIAL` or `CONTRADICTED`, an applicable profile has a `MUST_FIX` item, or the No-Diversion Gate has a `DIVERSION_MUST_FIX` item.
+3. **SCOPE_VERIFIED:** every in-scope claim is `SUPPORTED`, every applicable profile census is closed with zero `MUST_FIX` items, the No-Diversion Gate is `PASSED` or validly `NOT_APPLICABLE`, the assurance requirement is satisfied, and one or more material occurrences remain `MATERIAL_OUT_OF_SCOPE`. Name and count every excluded material class.
 4. **VERIFIED:** all `SCOPE_VERIFIED` conditions are met and no material occurrence is outside the Policy scope.
 
 For a high-risk Policy, `VERIFIED` and `SCOPE_VERIFIED` both require a sealed semantic reviewer independent of the Subject author. Otherwise use `BLOCKED`.

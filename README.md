@@ -17,7 +17,7 @@ Subject to verify + Source Box + Policy
                     |
                     v
       semantic verification + adversarial audit
-          + optional distraction audit
+          + mandatory No-Diversion Gate
                     |
                     v
       required outcome: closed ledger or BLOCKED
@@ -50,12 +50,12 @@ The harness then separates the work:
 3. A primary verifier judges every claim against the underlying passages, not against a summary verdict.
 4. For high-risk work, a sealed independent semantic verifier repeats the mapping and verdict work in an isolated context before seeing the primary review.
 5. An adversarial reviewer searches for omitted claims, contrary passages, invalid exclusions, missing context, and overreach.
-6. When the Policy enables it, a distraction reviewer finds exact wording that lets the intended reader answer a side issue instead of the required issue, action, or remedy.
+6. Whenever the Subject asks a recipient for an answer, decision, reason, correction, action, or remedy, a No-Diversion reviewer finds exact wording that lets the recipient answer a side issue instead of the required outcome.
 7. A release review checks the closed ledger and applies status precedence.
 
 The default is **audit only**. Entailgate reports the defects before changing the Subject. Repair and advocacy uplift are separate, explicit modes.
 
-The Distraction Audit is also opt-in. The run card must name the intended reader, core issue IDs, and required outcomes. This keeps the layer generic: the same check can protect a legal demand, customer escalation, policy request, or business instruction from a plausible non-answer.
+The No-Diversion Gate is mandatory for recipient-facing requests. The run card must name the intended reader, core issue IDs, and non-displaceable outcomes. A draft cannot be called release-ready while a concrete diversion route remains. The same gate can protect a legal demand, customer escalation, policy request, or business instruction from a facially responsive non-answer.
 
 ## What 100% means
 
