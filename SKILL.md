@@ -167,7 +167,7 @@ This gate is **REQUIRED** whenever the Subject is directed to a person or instit
 
 The run card must identify the intended reader or decision-maker, every core issue ID, and the exact non-displaceable answer, action, or remedy required for each issue. Read the complete Subject once from the recipient's perspective. Find wording that would let the recipient give a facially responsive side answer while leaving the core issue or required outcome unresolved.
 
-When the Subject evaluates a prior response, also build an `Issue A → Response B` map. Record the issue actually raised and the different issue actually answered. A change in actor, object, event, category, legal test, time period, causation question, or requested outcome is a possible substitution even when the answer to B is accurate. An answer to B does not close A.
+When the Subject evaluates a prior response, also perform a **straw-man analysis**. Record the issue actually raised, the substitute issue actually answered, the material element displaced, and what remains unanswered. A change in actor, object, event, category, legal test, time period, causation question, or requested outcome is a possible straw-man substitution even when the answer to the substitute is accurate. Accuracy on the substitute does not close the original issue.
 
 For every possible diversion:
 
