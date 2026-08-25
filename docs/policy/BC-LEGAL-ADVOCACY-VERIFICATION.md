@@ -110,6 +110,30 @@ nitpick cannot materially hurt the submission, classify the existing wording
     referral back, or explanation unless the user selected that result or law makes it
     the only available route.
 
+## Distraction audit
+
+Run this policy-only census only when the Policy expressly enables advocacy uplift or
+recipient-response review. For each numbered issue, record the exact answer,
+correction, or remedy required. Then identify exact draft wording that would let the
+institution answer a side issue while leaving that required outcome unresolved.
+
+Use `DISTRACTION_MUST_FIX` only when the trigger creates a concrete release impact.
+Common triggers include competence or child-comprehension comparisons, requests for a
+different internal reviewer instead of a result, ambiguous actors or event categories,
+merged coworker conduct and employer decisions, a factual-comparison response to a
+legal-principle question, and a generic deadline detached from the numbered issues.
+Delete only the trigger or make the smallest clarification. Preserve the supported
+allegation, legal force, and requested remedy.
+
+For rumours and smears, test workplace dissemination directly. A statement may be
+spread to third parties without first being spoken to the applicant. A coworker's
+direct message may be evidence that the smear had already spread, was repeated, or
+reached that coworker. Keep dissemination, repetition, notice, and direct contact as
+separate questions.
+
+The report may record internally the shortest plausible non-answer invited by the
+draft. Never copy that imagined answer or a new respondent defence into outgoing text.
+
 ## Legal-force calibration without surrender
 
 - When official guidance says `should`, do not attribute `must` to it. Use `should`,

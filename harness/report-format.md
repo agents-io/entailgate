@@ -17,6 +17,8 @@ Use this human-readable format. Keep the evidence concise but sufficient for ano
 - **Claim-ledger coverage:** `reviewed / total inventoried material claims (percentage)`
 - **Required-source coverage:** `fully inspected / total required sources (percentage)`
 - **Profile-item coverage:** `reviewed / total applicable policy-only items (percentage or N/A)`
+- **Distraction audit:** `ENABLED | DISABLED`
+- **Distraction-item coverage:** `reviewed / total applicable triggers (percentage or N/A)`
 - **Verdicts:** count of each verdict
 - **Action state:** `NO ACTION REQUESTED | PROPOSED ONLY | EXTERNAL AUTHORIZATION REQUIRED | EXECUTION RECEIPT PRESENT`
 
@@ -32,6 +34,7 @@ Use this human-readable format. Keep the evidence concise but sufficient for ano
 | Primary Semantic Verifier | ... | YES / NO | same / isolated | YES / NO | FULL / SCOPED / NONE |
 | Sealed Independent Semantic Verifier | ... | NO | isolated | NO | FULL / SCOPED |
 | Adversarial reviewer | ... | YES / NO | same / isolated | YES / NO | FULL / SCOPED / NONE |
+| Distraction reviewer | ... | YES / NO | same / isolated | YES / NO | FULL / SCOPED / NONE |
 
 Use `SEALED_INDEPENDENT_AI` only when the independent semantic reviewer worked in a separate context, did not author the Subject, and completed its own occurrence map, claim census, source inspection, and provisional verdicts before seeing the first reviewer’s work. A census-only or adversarial pass does not qualify. Otherwise use `SINGLE_MODEL_REVIEW`. A high-risk `VERIFIED` or `SCOPE_VERIFIED` result requires the qualifying independent semantic row.
 
@@ -81,6 +84,7 @@ Rules:
 - All Subject occurrences classified: `YES | NO`
 - All supplied sources inventoried: `YES | NO`
 - All applicable profile censuses completed: `YES | NO | N/A`
+- Authorized distraction census completed: `YES | NO | N/A`
 - Material Subject or source exclusions challenged: `YES | NO`
 - Material out-of-scope classes and counts:
 - Unresolved denominator risk:
@@ -89,7 +93,7 @@ If the Subject boundary is incomplete, `Whole Subject inspected` is `NO`, or any
 
 ## Material defects
 
-List every `MUST_FIX` item, ordered by practical risk. This includes `PARTIAL` and `CONTRADICTED` claims as well as missing-source items that cannot remain in the Subject as written. Repeat unresolved-evidence items in **Missing or unavailable evidence** and retain their exact semantic verdict; do not relabel them as proven false. For each item, state the source-demonstrated defect, concrete release impact, and smallest correction that would cure it when repair is requested. Do not list a mere nitpick, another reasonable interpretation, omitted opposing argument, or preference for cautious prose as a defect.
+List every `MUST_FIX` and `DISTRACTION_MUST_FIX` item, ordered by practical risk. This includes `PARTIAL` and `CONTRADICTED` claims as well as missing-source items that cannot remain in the Subject as written. Repeat unresolved-evidence items in **Missing or unavailable evidence** and retain their exact semantic verdict; do not relabel them as proven false. For each item, state the source-demonstrated defect or exact distraction trigger, concrete release impact, and smallest correction that would cure it when repair is requested. Do not list a mere nitpick, another reasonable interpretation, omitted opposing argument, or preference for cautious prose as a defect.
 
 ## Missing or unavailable evidence
 
@@ -102,6 +106,16 @@ List every `NOT_FOUND`, `SOURCE_UNAVAILABLE`, `OUTSIDE_SOURCE`, and `UNCERTAIN` 
 | C-001 | ... | source IDs and locators | verdict retained / changed |
 
 Also report omitted claims, denominator changes, prompt-injection concerns, source-authenticity concerns, and the search scope used for limiting, contrary, or superseding material. Counts alone are insufficient.
+
+## Distraction audit
+
+Include only when the Policy expressly enables the distraction audit.
+
+| ID | Core issue and required outcome | Exact trigger text and locator | Side answer invited (internal only) | What would remain unanswered | Concrete release impact | Track | Smallest repair |
+|---|---|---|---|---|---|---|---|
+| D-001 | ... | ... | ... | ... | ... | DISTRACTION_MUST_FIX / KEEP_STRONG / STRENGTHEN | ... |
+
+The `Side answer invited` column is an internal diagnostic. Do not copy the imagined response into proposed outgoing text. Use `DISTRACTION_MUST_FIX` only when the quoted trigger creates a concrete exit with material release impact. Keep the smallest repair tied to the same core issue and required outcome.
 
 ## Uplift
 

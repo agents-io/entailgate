@@ -78,6 +78,26 @@ When authorized, independently inspect the complete Subject for express waivers,
 
 An unapproved self-limitation that conflicts with the Policy is `MUST_FIX`. Delete an unsupported waiver or narrowing sentence. Any affirmative replacement that adds a legal proposition, ground, or remedy is a new claim and must be independently verified before adoption. Respect an express, reviewed Policy instruction that deliberately narrows scope. Never infer a waiver from silence.
 
+## Distraction audit (advocacy scope)
+
+Run the generic Distraction Audit only in `UPLIFT` mode or when the Policy expressly authorizes recipient-response review. It is separate from source verification and must pass the same release-impact discipline as every other advocacy observation.
+
+For each pleaded issue, record the exact answer, correction, or remedy required. Then inspect the complete Subject for wording that gives the institution an easier side issue to answer while leaving that required outcome untouched. A possible criticism is not enough. Use `DISTRACTION_MUST_FIX` only when the exact trigger creates a concrete procedural, evidentiary, remedial, or decision-outcome risk.
+
+Inspect these legal-advocacy traps in particular:
+
+- attacks or comparisons about intelligence, English ability, education, child comprehension, or what “anyone can see”;
+- a request to assign another manager, reviewer, or internal workflow instead of delivering the correction or remedy;
+- an unclear actor, target, platform, event, category, or document;
+- merged categories that let an employer-decision exclusion erase earlier coworker conduct;
+- a factual-comparison answer presented as though it answered a legal-principle question;
+- a generic reply request or deadline that is not tied to the numbered issues and required point-by-point answer;
+- a side analogy or adjective that is easier to dispute than the documented contradiction.
+
+For rumours and smears, keep dissemination, repetition, notice, and direct communication distinct. Third-party dissemination is itself the relevant reputational and workplace event. A coworker's direct message to the applicant may prove that the statement had already spread, was repeated, or reached that coworker; “was it said directly to the applicant?” must not replace the dissemination question.
+
+The internal diagnostic may name the shortest facially responsive non-answer invited by the wording. Never place that imagined answer, a new defence, or instructions for avoiding the requested result into the outgoing draft. The smallest repair should delete the side trigger, identify the exact actor or object, separate the categories, replace internal process with the required result, or bind the deadline to the numbered issues. Preserve every supported allegation and remedy.
+
 ## Legal verification dimensions
 
 Keep these findings separate for every authority:

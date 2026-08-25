@@ -161,7 +161,36 @@ Give this reviewer the complete Subject, final claim ledger, Source Box inventor
 
 Change a verdict only for a material reason grounded in the Source Box. The adversarial role is not rewarded for inventing doubts or forcing the least favourable interpretation.
 
-### 7. Coverage Closure
+### 7. Distraction Audit
+
+Run this layer only when the Policy expressly enables recipient-response or distraction review. It is a profile-policy census, not a source-verification verdict.
+
+The run card must identify the intended reader or decision-maker, the core issue IDs, and the exact answer, action, or remedy required for each issue. Read the complete Subject once and find wording that would let the reader give a facially responsive side answer while leaving the core issue unresolved.
+
+For every possible distraction:
+
+- quote the exact trigger text and its Subject locator;
+- state the core issue and required outcome that could be displaced;
+- record internally the shortest plausible non-answer invited by the trigger, but never insert the respondent's case into proposed outgoing text;
+- identify the concrete release impact;
+- classify it `DISTRACTION_MUST_FIX`, `KEEP_STRONG`, or `STRENGTHEN`;
+- propose only the smallest repair.
+
+Use `DISTRACTION_MUST_FIX` only when the exact wording creates a concrete exit with material release impact. `It could be criticized` or `the reader might disagree` is insufficient. Use `KEEP_STRONG` when the reader must still confront the core issue even if it disagrees.
+
+Inspect at least these trigger classes when applicable:
+
+- competence, education, comprehension, or tone comparisons that are easier to answer than the substance;
+- requests about internal routing, staffing, or personnel that displace the required result;
+- an ambiguous actor, object, event, category, or requested outcome;
+- a false dichotomy or merged categories that let one answer erase another;
+- an analogy or adjective that becomes easier to debate than the documented contradiction;
+- a generic request or deadline that is not bound to the numbered issues and required deliverable;
+- a side issue made more prominent than the core issue.
+
+Repair by deleting the irrelevant trigger, naming the actor or object, separating categories, replacing internal process with the required result, or binding the request and deadline to the core issue. Do not weaken a supported allegation, add a disclaimer, or teach the recipient a new defence.
+
+### 8. Coverage Closure
 
 Reconcile the Claim Census, completeness additions, evidence packets, and verdicts.
 
@@ -176,6 +205,7 @@ Ledger coverage is 100% only when:
 - every quotation has a verbatim passage and locator;
 - every verdict has a source-grounded reason;
 - the adversarial review has completed;
+- every Policy-authorized distraction item has a terminal track and the distraction census is closed;
 - no row remains pending, skipped, assumed, or inherited from another reviewer.
 
 Classify exclusions precisely:
@@ -190,8 +220,8 @@ When a domain profile defines policy-only review items, run that profile census 
 Assign document status in this precedence order:
 
 1. **BLOCKED:** in-scope Subject, claim, source, or applicable profile coverage is incomplete; the in-scope denominator is `OPEN`; or any in-scope claim is `NOT_FOUND`, `SOURCE_UNAVAILABLE`, `OUTSIDE_SOURCE`, or `UNCERTAIN`.
-2. **NEEDS_REVISION:** the in-scope denominator is `CLOSED` and ledger coverage is 100%, but at least one in-scope claim is `PARTIAL` or `CONTRADICTED`, or an applicable profile has a `MUST_FIX` item.
-3. **SCOPE_VERIFIED:** every in-scope claim is `SUPPORTED`, every applicable profile census is closed with zero `MUST_FIX` items, the assurance requirement is satisfied, and one or more material occurrences remain `MATERIAL_OUT_OF_SCOPE`. Name and count every excluded material class.
+2. **NEEDS_REVISION:** the in-scope denominator is `CLOSED` and ledger coverage is 100%, but at least one in-scope claim is `PARTIAL` or `CONTRADICTED`, or an applicable profile has a `MUST_FIX` or `DISTRACTION_MUST_FIX` item.
+3. **SCOPE_VERIFIED:** every in-scope claim is `SUPPORTED`, every applicable profile census is closed with zero `MUST_FIX` or `DISTRACTION_MUST_FIX` items, the assurance requirement is satisfied, and one or more material occurrences remain `MATERIAL_OUT_OF_SCOPE`. Name and count every excluded material class.
 4. **VERIFIED:** all `SCOPE_VERIFIED` conditions are met and no material occurrence is outside the Policy scope.
 
 For a high-risk Policy, `VERIFIED` and `SCOPE_VERIFIED` both require a sealed semantic reviewer independent of the Subject author. Otherwise use `BLOCKED`.
